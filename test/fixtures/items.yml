@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  item: MyString
+  value: 9.99
+  category: MyString
+  status: 1
+  gst: 9.99
+  multiplier: 9.99
+  date: MyString
+  identifier: MyString
+
+two:
+  item: MyString
+  value: 9.99
+  category: MyString
+  status: 1
+  gst: 9.99
+  multiplier: 9.99
+  date: MyString
+  identifier: MyString
