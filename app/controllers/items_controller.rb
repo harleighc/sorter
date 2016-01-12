@@ -11,7 +11,7 @@ class ItemsController < ApplicationController
     @it = Item.where("category = ?", params[:cat])
     @distinct = Item.uniq.pluck(:category)
     @bank = Item.connection.select_value("SELECT sum(value) FROM items WHERE category = 'BANK FEES'")
-    
+
     # @total = Item.connection.select_value("SELECT category, sum(value) as tot FROM items GROUP BY category")
     #@totals = Item.where("SELECT sum(category) as tot FROM items GROUP BY category")
    # @distinct = Item.uniq.pluck(:category)
