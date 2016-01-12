@@ -1,11 +1,17 @@
 <p id="notice"><%= notice %></p>
 
 <li><%= link_to "Login", root_path %></li>
-<li><%= link_to "BANK FEES" , items_path(@items, :cat => "BANK FEES") %></li>
-<li><%= link_to "UNSORTED PURCHASE", items_path(@items, :cat => "UNSORTED PURCHASE") %></li>
-<li><%= link_to "INCOME", items_path(@items, :cat => "INCOME") %></li>
-<li><%= link_to "WITDRAWAL", items_path(@items, :cat => "WITDRAWAL") %></li>
-<li><%= link_to "DEPOSIT", items_path(@items, :cat => "DEPOSIT") %></li>
+
+
+<h1>Categories</h1>
+<% @distinct.each do |cat| %>
+  <li><%= link_to cat , items_path(@items, :cat => cat ) %></li>
+<% end %>
+
+<h1>Cat totals</h1>
+<% @cattotals.each do |cat,tot| %>
+<td> <%= cat %>  <%=  tot  %> </td>
+<% end %>
 
 
 
@@ -26,22 +32,24 @@
   </thead>
 
   <tbody>
-    <% @items.each do |item| %>
+    <% @it.each do |it| %>
       <tr>
-        <td><%= item.item %></td>
-        <td><%= item.value %></td>
-        <td><%= item.category %></td>
-        <td><%= item.status %></td>
-        <td><%= item.gst %></td>
-        <td><%= item.multiplier %></td>
-        <td><%= item.date %></td>
-        <td><%= item.identifier %></td>
-        <td><%= link_to 'Show', item %></td>
-        <td><%= link_to 'Edit', edit_item_path(item) %></td>
+        <td><%= it.item %></td>
+        <td><%= it.value %></td>
+        <td><%= it.category %></td>
+        <td><%= it.status %></td>
+        <td><%= it.gst %></td>
+        <td><%= it.multiplier %></td>
+        <td><%= it.date %></td>
+        <td><%= it.identifier %></td>
+        <td><%= link_to 'Show', (it) %></td>
+        <td><%= link_to 'Edit', edit_item_path(it) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+
 
 
 
