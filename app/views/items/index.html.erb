@@ -42,3 +42,15 @@
 <br>
 
 <%= link_to 'New Item', new_item_path %>
+
+<h3>Import Companies</h3>
+<%= form_tag import_items_path, multipart: true do %>
+<%= file_field_tag :file %>
+<%= submit_tag "Import Companies", class: 'btn btn-default'%>
+<% end %>
+
+<h3>Download File</h3>
+<%= link_to "Report", items_path(format: "csv"), class: 'btn btn-default' %>
+
+
+<%= link_to 'New Company', new_item_path %>

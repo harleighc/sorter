@@ -1,10 +1,14 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
+
+
   # GET /items
   # GET /items.json
   def index
-    @items = Item.all
+    
+    @items = Item.where("category = ?", params[:cat])
+
   end
 
   # GET /items/1
@@ -60,6 +64,13 @@ class ItemsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+    def import
+      Item.import(params[:file])
+      redirect_to items_path, notice: "Companies Added Succesfully"
+  end
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
