@@ -9,11 +9,11 @@ class ItemsController < ApplicationController
 
     @cat = params[:cat]
     @items = Item.where("category = ?", params[:cat])
-    @bank = Item.connection.select_value("SELECT sum(value) FROM items WHERE category = 'BANK FEES'")
-    @total = Item.connection.select_value("SELECT category, sum(value) as tot FROM items GROUP BY category")
-    @totals = Item.where("SELECT sum(category) as tot FROM items GROUP BY category")
-    @distinct = Item.uniq.pluck(:category)
-    @another = Item.where("SELECT category FROM items GROUP BY category")
+    # @bank = Item.connection.select_value("SELECT sum(value) FROM items WHERE category = 'BANK FEES'")
+    # @total = Item.connection.select_value("SELECT category, sum(value) as tot FROM items GROUP BY category")
+    #@totals = Item.where("SELECT sum(category) as tot FROM items GROUP BY category")
+   # @distinct = Item.uniq.pluck(:category)
+    #@another = Item.where("SELECT category FROM items GROUP BY category")
 
 
 
