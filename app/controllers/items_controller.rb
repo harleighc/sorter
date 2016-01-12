@@ -6,11 +6,20 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    
+
+    @cat = params[:cat]
     @items = Item.where("category = ?", params[:cat])
+    @bank = Item.connection.select_value("SELECT sum(value) FROM items WHERE category = 'BANK FEES'")
+    @total = Item.connection.select_value("SELECT category, sum(value) as tot FROM items GROUP BY category")
+    @totals = Item.where("SELECT sum(category) as tot FROM items GROUP BY category")
+    @distinct = Item.uniq.pluck(:category)
+    @another = Item.where("SELECT category FROM items GROUP BY category")
+
+
+
+
 
   end
-
   # GET /items/1
   # GET /items/1.json
   def show
@@ -28,7 +37,9 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
+
     @item = Item.new(item_params)
+
 
     respond_to do |format|
       if @item.save
@@ -66,6 +77,7 @@ class ItemsController < ApplicationController
   end
 
     def import
+
       Item.import(params[:file])
       redirect_to items_path, notice: "Companies Added Succesfully"
   end
@@ -75,6 +87,8 @@ class ItemsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
+
+
       @item = Item.find(params[:id])
     end
 

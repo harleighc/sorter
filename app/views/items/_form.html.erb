@@ -11,38 +11,16 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :item %><br>
-    <%= f.text_field :item %>
+
+ <div class="control-group">
+
+[]
+   <%= f.label "Category", class: 'control-label' %>
+    <div class="controls">
+      <%= f.select(:category, options_for_select([[1,1],["BANK FEES","BANK FEES"]]), { include_blank: false }) %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :value %><br>
-    <%= f.text_field :value %>
-  </div>
-  <div class="field">
-    <%= f.label :category %><br>
-    <%= f.text_field :category %>
-  </div>
-  <div class="field">
-    <%= f.label :status %><br>
-    <%= f.number_field :status %>
-  </div>
-  <div class="field">
-    <%= f.label :gst %><br>
-    <%= f.text_field :gst %>
-  </div>
-  <div class="field">
-    <%= f.label :multiplier %><br>
-    <%= f.text_field :multiplier %>
-  </div>
-  <div class="field">
-    <%= f.label :date %><br>
-    <%= f.text_field :date %>
-  </div>
-  <div class="field">
-    <%= f.label :identifier %><br>
-    <%= f.text_field :identifier %>
-  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

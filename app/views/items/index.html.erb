@@ -1,9 +1,14 @@
 <p id="notice"><%= notice %></p>
-<li><%= link_to "Login", root_path %></li>
-<li><%= link_to "BANK FEES", items_path(@comp, :cat => "BANK FEES") %></li>
-<li><%= link_to "UNSORTED", items_path(@companies, :cat => "UNSORTED") %></li>
 
-<h1>Listing Items</h1>
+<li><%= link_to "Login", root_path %></li>
+<li><%= link_to "BANK FEES" , items_path(@items, :cat => "BANK FEES") %></li>
+<li><%= link_to "UNSORTED PURCHASE", items_path(@items, :cat => "UNSORTED PURCHASE") %></li>
+<li><%= link_to "INCOME", items_path(@items, :cat => "INCOME") %></li>
+<li><%= link_to "WITDRAWAL", items_path(@items, :cat => "WITDRAWAL") %></li>
+<li><%= link_to "DEPOSIT", items_path(@items, :cat => "DEPOSIT") %></li>
+
+
+
 
 <table>
   <thead>
@@ -33,11 +38,23 @@
         <td><%= item.identifier %></td>
         <td><%= link_to 'Show', item %></td>
         <td><%= link_to 'Edit', edit_item_path(item) %></td>
-        <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<table>
+  <tbody>
+    <% @another.each do |i| %>
+      <tr>
+        <td><%= i.category %></td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= render @another %>
 
 <br>
 
@@ -51,6 +68,6 @@
 
 <h3>Download File</h3>
 <%= link_to "Report", items_path(format: "csv"), class: 'btn btn-default' %>
-
-
 <%= link_to 'New Company', new_item_path %>
+
+
