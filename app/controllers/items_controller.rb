@@ -17,7 +17,7 @@ class ItemsController < ApplicationController
     #@another = Item.where("SELECT category FROM items GROUP BY category")
     @cattotals = Item.group(:category).sum("value * gst * (100/multiplier)")
     @multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
-
+    # @combinedview = Item.group(:category).sum(value).count(item)
 
 
 
@@ -46,7 +46,7 @@ class ItemsController < ApplicationController
   def create
     @distinct = Item.uniq.pluck(:category)
     @item = Item.new(item_params)
-    
+
 
     respond_to do |format|
       if @item.save
