@@ -19,7 +19,7 @@ class ItemsController < ApplicationController
     #@totals = Item.where("SELECT sum(category) as tot FROM items GROUP BY category")
    # @distinct = Item.uniq.pluck(:category)
     #@another = Item.where("SELECT category FROM items GROUP BY category")
-     @cattotals = Item.group(:category).sum(:value)
+    @cattotals = Item.group(:category).sum("value * gst * (100/multiplier)")
 
 
 
@@ -38,7 +38,8 @@ class ItemsController < ApplicationController
   # GET /items/1/edit
   def edit
     @distinct = Item.uniq.pluck(:category)
-    @trial = params[:form]
+
+    @form = params[:form]
 
  end
 
@@ -48,7 +49,7 @@ class ItemsController < ApplicationController
   def create
     @distinct = Item.uniq.pluck(:category)
     @item = Item.new(item_params)
-    @trial = params[:form]
+    @form = params[:form]
 
     respond_to do |format|
       if @item.save

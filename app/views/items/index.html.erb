@@ -6,6 +6,7 @@
 <h1>Categories</h1>
 <% @distinct.each do |cat| %>
   <li><%= link_to cat , items_path(:cat => cat ) %></li>
+
 <% end %>
 
 <h1>Cat totals</h1>
