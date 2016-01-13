@@ -3,9 +3,12 @@
 <li><%= link_to "Login", root_path %></li>
 
 
+
+
 <h1>Categories</h1>
 <% @distinct.each do |cat| %>
-  <li><%= link_to cat , items_path(:cat => cat ) %></li>
+<li><%= link_to cat , items_path(:cat => cat ) %></li>
+
 
 <% end %>
 

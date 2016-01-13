@@ -2,10 +2,6 @@ class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
 
-
-
-
-
   # GET /items
   # GET /items.json
   def index
@@ -20,6 +16,7 @@ class ItemsController < ApplicationController
    # @distinct = Item.uniq.pluck(:category)
     #@another = Item.where("SELECT category FROM items GROUP BY category")
     @cattotals = Item.group(:category).sum("value * gst * (100/multiplier)")
+    @multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
 
 
 
@@ -38,7 +35,7 @@ class ItemsController < ApplicationController
   # GET /items/1/edit
   def edit
     @distinct = Item.uniq.pluck(:category)
-
+    @multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
     @form = params[:form]
 
  end
@@ -49,7 +46,7 @@ class ItemsController < ApplicationController
   def create
     @distinct = Item.uniq.pluck(:category)
     @item = Item.new(item_params)
-    @form = params[:form]
+    
 
     respond_to do |format|
       if @item.save
