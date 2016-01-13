@@ -3,6 +3,9 @@ class ItemsController < ApplicationController
 
 
 
+
+
+
   # GET /items
   # GET /items.json
   def index
@@ -34,12 +37,13 @@ class ItemsController < ApplicationController
 
   # GET /items/1/edit
   def edit
+    @distinct = Item.uniq.pluck(:category)
   end
 
   # POST /items
   # POST /items.json
   def create
-
+    @distinct = Item.uniq.pluck(:category)
     @item = Item.new(item_params)
 
 
@@ -57,6 +61,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
+    @distinct = Item.uniq.pluck(:category)
     respond_to do |format|
       if @item.update(item_params)
         format.html { redirect_to @item, notice: 'Item was successfully updated.' }
@@ -98,4 +103,8 @@ class ItemsController < ApplicationController
     def item_params
       params.require(:item).permit(:item, :value, :category, :status, :gst, :multiplier, :date, :identifier)
     end
+
+
+
 end
+
