@@ -5,7 +5,7 @@
 
 <h1>Categories</h1>
 <% @distinct.each do |cat| %>
-  <li><%= link_to cat , items_path(@items, :cat => cat ) %></li>
+  <li><%= link_to cat , items_path(:cat => cat ) %></li>
 <% end %>
 
 <h1>Cat totals</h1>
@@ -14,6 +14,7 @@
 <% end %>
 
 
+<h1><%= params[:cat] %></h1>
 
 
 <table>
@@ -43,7 +44,9 @@
         <td><%= it.date %></td>
         <td><%= it.identifier %></td>
         <td><%= link_to 'Show', (it) %></td>
-        <td><%= link_to 'Edit', edit_item_path(it) %></td>
+        <td><%= link_to 'Edit Category' , edit_item_path(:id => it, :form => "category" ) %></td>
+         <td><%=   link_to 'Confirm' , edit_item_path(:id => it, :form => "status" ) %></td>
+
       </tr>
     <% end %>
   </tbody>
@@ -55,7 +58,7 @@
 
 <br>
 
-<%= link_to 'New Item', new_item_path %>
+
 
 <h3>Import Companies</h3>
 <%= form_tag import_items_path, multipart: true do %>

@@ -10,7 +10,7 @@ class ItemsController < ApplicationController
   # GET /items.json
   def index
 
-    @cat = params[:cat]
+   # @cat = params[:cat]
     @it = Item.where("category = ?", params[:cat])
     @distinct = Item.uniq.pluck(:category)
     @bank = Item.connection.select_value("SELECT sum(value) FROM items WHERE category = 'BANK FEES'")
@@ -38,14 +38,17 @@ class ItemsController < ApplicationController
   # GET /items/1/edit
   def edit
     @distinct = Item.uniq.pluck(:category)
-  end
+    @trial = params[:form]
+
+ end
+
 
   # POST /items
   # POST /items.json
   def create
     @distinct = Item.uniq.pluck(:category)
     @item = Item.new(item_params)
-
+    @trial = params[:form]
 
     respond_to do |format|
       if @item.save
