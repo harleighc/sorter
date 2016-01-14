@@ -1,0 +1,11 @@
+<h2>Form Data - enter</h2>
+<% content_for :title do %>
+
+<% end %>
+<%= form_tag do %>
+<%= text_field_tag "Category" %>
+<%= submit_tag "submit" %>
+<% end %>
+
+<%= @newcat %>
+

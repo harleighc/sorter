@@ -2,22 +2,29 @@ class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
 
+
+
+
   # GET /items
   # GET /items.json
   def index
 
-   # @cat = params[:cat]
+    #@cat = params[:cat]
+    @another = "another"
+
     @it = Item.where("category = ?", params[:cat])
     @distinct = Item.uniq.pluck(:category)
-    @bank = Item.connection.select_value("SELECT sum(value) FROM items WHERE category = 'BANK FEES'")
+    @layout = params[:size]
+
+    # @bank = Item.connection.select_value("SELECT sum(value) FROM items WHERE category = 'BANK FEES'")
 
     # @total = Item.connection.select_value("SELECT category, sum(value) as tot FROM items GROUP BY category")
     #@totals = Item.where("SELECT sum(category) as tot FROM items GROUP BY category")
    # @distinct = Item.uniq.pluck(:category)
     #@another = Item.where("SELECT category FROM items GROUP BY category")
-    @cattotals = Item.group(:category).sum("value * gst * (100/multiplier)")
-    @multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
-    # @combinedview = Item.group(:category).sum(value).count(item)
+    @cattotals = Item.group(:category).sum("value * gst * multiplier")
+    # @multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
+    @combinedview = Item.where("category = ?", params[:cat]).group(:item).sum(:value)
 
 
 
@@ -30,6 +37,7 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
+
   end
 
   # GET /items/1/edit
