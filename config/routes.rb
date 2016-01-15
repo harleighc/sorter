@@ -1,22 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :items do
-    resources :category
-  end
-  get 'category/new'
-  post 'category/new'
-
 
  root to: 'items#index'
  resources :items do
-
    collection {post :import}
 
-
-
-
- end
-
-
-
+   end
+  match 'items/multi' => 'items#multi', :via => :get
+  match 'items/multi' => 'items#multi', :via => :post
+  match 'items/newcat' => 'items#newcat', :via => :get
+  match 'items/newcat' => 'items#newcat', :via => :post
 end

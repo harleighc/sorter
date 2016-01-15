@@ -1,30 +1,31 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
+  def newcat
+   ##@newcat = params[:New]
+  end
 
-
-
-
-  # GET /items
-  # GET /items.json
   def index
 
-    #@cat = params[:cat]
-    @another = "another"
+    @cat = params[:cat]
+    @it = Item.where("category = ?", params[:cat]).order(:value)
 
-    @it = Item.where("category = ?", params[:cat])
     @distinct = Item.uniq.pluck(:category)
     @layout = params[:size]
-
-    # @bank = Item.connection.select_value("SELECT sum(value) FROM items WHERE category = 'BANK FEES'")
-
-    # @total = Item.connection.select_value("SELECT category, sum(value) as tot FROM items GROUP BY category")
-    #@totals = Item.where("SELECT sum(category) as tot FROM items GROUP BY category")
-   # @distinct = Item.uniq.pluck(:category)
-    #@another = Item.where("SELECT category FROM items GROUP BY category")
     @cattotals = Item.group(:category).sum("value * gst * multiplier")
-    # @multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
     @combinedview = Item.where("category = ?", params[:cat]).group(:item).sum(:value)
+    @combinedview = @combinedview.sort_by {|x,y|y}
+
+    ##Item.where('category = BANK FEES"').group(:item).sum(:value)
+    ##
+    ##combined view console Item.where('category = "BANK FEES"').group(:item).sum(:value)
+    #top is an array
+    @top = Item.where("category = ?", params[:cat]).where("item = ?", params[:itex]).order(:value)
+    # console test Item.select('item, value').where('category = "BANK FEES"').where('item = "a"').order('value desc') -tested
+    #bottom in a hash
+     @bottom = Item.select('item, sum(value)').where("category = ?", params[:cat]).where("item != ?", params[:itex]).group(:item).sum(:value)
+    @bottom = @bottom.sort_by {|x,y|y}
+    #Item.select('item, sum(value) as val').where('category = "BANK FEES"').where('item != "a"').order('val desc').group(:item).sum(:value)
 
 
 
@@ -37,15 +38,13 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
-
   end
 
   # GET /items/1/edit
   def edit
     @distinct = Item.uniq.pluck(:category)
-    @multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
+    #@multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
     @form = params[:form]
-
  end
 
 
@@ -54,7 +53,6 @@ class ItemsController < ApplicationController
   def create
     @distinct = Item.uniq.pluck(:category)
     @item = Item.new(item_params)
-
 
     respond_to do |format|
       if @item.save
@@ -80,7 +78,9 @@ class ItemsController < ApplicationController
         format.json { render json: @item.errors, status: :unprocessable_entity }
       end
     end
+
   end
+
 
   # DELETE /items/1
   # DELETE /items/1.json
@@ -92,21 +92,18 @@ class ItemsController < ApplicationController
     end
   end
 
-    def import
+   def import
+     Item.import(params[:file])
+     redirect_to items_path, notice: "Companies Added Succesfully"
+   end
 
-      Item.import(params[:file])
-      redirect_to items_path, notice: "Companies Added Succesfully"
+  private
+# Use callbacks to share common setup or constraints between actions.
+  def set_item
+  @item = Item.find(params[:id])
   end
 
 
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_item
-
-
-      @item = Item.find(params[:id])
-    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params

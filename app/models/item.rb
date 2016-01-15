@@ -1,6 +1,9 @@
 class Item < ActiveRecord::Base
 before_save :update_status
 before_save :update_status2
+before_save :lowercase
+
+
 
   def self.import(file)
     x = File.open(file.path)
@@ -22,6 +25,8 @@ before_save :update_status2
   end
   def update_status2
     self.status = 4 if category == "UNSORTED PURCHASE"
-
   end
+def lowercase
+    self[:item].titleize
+end
 end

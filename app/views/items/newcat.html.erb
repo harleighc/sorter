@@ -1,11 +1,13 @@
+
+
 <h2>New Category</h2>
 <% content_for :title do %>
 
 <% end %>
 <%= form_tag do %>
-<%= text_field_tag "Category" %>
+<%= text_field_tag "New" %>
 <%= submit_tag "submit" %>
 <% end %>
 
 <%= @newcat %>
-
+<% params[:New] %>

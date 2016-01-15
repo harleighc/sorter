@@ -4,47 +4,93 @@
 
 <% if user_signed_in? %>
 
-<h1>Categories</h1>
+<h2>Categories</h2>
+
+<td><%= link_to 'Add new Category' , items_newcat_path %></td>
 <% @distinct.each do |cat| %>
-<li><%= link_to cat , items_path(:cat => cat ) %></li>
+<li><%= link_to cat , items_path(:cat => cat, :size => "large" ) %></li>
 
 
 <% end %>
 
-<h1>Category totals</h1>
+
+
+
+
+<h2>Category Totals</h2>
 <% @cattotals.each do |cat,tot| %>
 <td> <%= cat %>  <%=  tot  %> </td>
 <% end %>
+<h3><%= params[:cat] %></h3>
+<%= link_to "Itemised" , items_path(:cat => params[:cat], :size => "large" ) %>
+<%= link_to "Grouped" , items_path(:cat => params[:cat], :size => "small" ) %>
 
 
-<h1><%= params[:cat] %></h1>
-
-<%= link_to "Expand" , items_path(:cat => params[:cat], :size => "large" ) %>
-<%= link_to "Contract" , items_path(:cat => params[:cat], :size => "small" ) %>
-
-<% if @layout == "small" %>
-
-
+<% if @layout == "medium" %>
 <table>
   <thead>
     <tr>
       <th>Item</th>
       <th>Value</th>
+      <th>#items</th>
       <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @combinedview.each do |item,tot| %>
+    <% @top.each do |i| %>
+<tr>
+        <td><%= i.item %></td>
+        <td><%= i.value %></td>
+        <td><%= 1 %></td>
+        <td><%= nil %></td>
+        <td><%= link_to 'Edit Category' , edit_item_path(:id => i, :form => "category")%></td>
+        <% end %>
+  <tr>
+    <% @bottom.each do |k,v| %>
+        <td><%= k %></td>
+        <td><%= v %></td>
+        <td><%= n = Item.where(:item => k).where(:category => params[:cat]).count(:item) %></td>
+    <% if n > 1 %>
+        <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :size => "medium", :itex => k ) %></td>
+    <% else %>
+        <td><%= nil %></td>
+        <%end%>
+        <td><%= link_to 'Edit Category' , items_multi_path(:itex => k, :form => "category")%></td>
+<tr>
+       <% end %>
+  </tbody>
+</table>
+    
+<% elsif @layout == "small" %>
+<table>
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Value</th>
+      <th>#items</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @combinedview.each do |it,tot| %>
       <tr>
-        <td><%= item %></td>
+        <td><%= it %></td>
         <td><%= tot %></td>
+        <td><%= n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %></td>
+        <% if n > 1 %>
+        <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :size => "medium", :itex => it ) %></td>
+        <% else %>
+        <td><%= nil %></td>
+        <%end%>
+         <td><%= link_to 'Edit Category' , items_multi_path %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%  else %>
+<% elsif @layout == "large" %>
 
 <table>
   <thead>
@@ -74,7 +120,7 @@
         <td><%= it.identifier %></td>
         <td><%= link_to 'Show', (it) %></td>
         <td><%= link_to 'Edit Category' , edit_item_path(:id => it, :form => "category" ) %></td>
-         <td><%= link_to 'Confirm' , edit_item_path(:id => it, :form => "status" ) %></td>
+        <td><%= link_to 'Confirm' , edit_item_path(:id => it, :form => "status" ) %></td>
 
 
 
@@ -95,10 +141,11 @@
 <%= form_tag import_items_path, multipart: true do %>
 <%= file_field_tag :file %>
 <%= submit_tag "Import Companies", class: 'btn btn-default'%>
-<% end %>
+
 
 <h3>Download File</h3>
 <%= link_to "Report", items_path(format: "csv"), class: 'btn btn-default' %>
 <%= link_to 'New Company', new_item_path %>
 
+<% end %>
 <% end %>
