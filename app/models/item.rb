@@ -2,6 +2,7 @@ class Item < ActiveRecord::Base
 before_save :update_status
 before_save :update_status2
 before_save :lowercase
+validates_presence_of :category
 
 
 

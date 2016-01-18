@@ -1,8 +1,11 @@
+<%= @distinct %>
+
+<%= @distinct2 %>
+
 <p id="notice"><%= notice %></p>
 
-<h2><%= params[:form_fields] %></h2>
-<h2><%= params[:cat] %></h2>
-<h2><%= params[:item] %></h2>
+<h2><%= @live_categories %></h2>
+
 <% if user_signed_in? %>
 
 <h2>Categories</h2>
@@ -39,7 +42,8 @@
         <td><%= i.value %></td>
         <td><%= 1 %></td>
         <td><%= nil %></td>
-  <td><%= link_to 'Edit Category' , items_multi_path(:id => i, :form => "category")%></td>
+        <td><%= link_to 'Edit Category' , edit_item_path(:id => i, :form => "category" ) %></td>
+
         <% end %>
   <tr>
     <% @expandgroupbottom.each do |k,v| %>
@@ -51,7 +55,7 @@
     <% else %>
         <td><%= nil %></td>
         <%end%>
-        <td><%= link_to 'Edit Category' , items_multi_path(:item => k, :cat => params[:cat])%></td>
+       <td><%= link_to 'Edit Category', edit_category_path(:cat => params[:cat], :item => k) %></td>
 <tr>
        <% end %>
   </tbody>
@@ -79,7 +83,7 @@
         <% else %>
         <td><%= nil %></td>
         <%end%>
-        <td><%= link_to 'Edit Category' , update_category_items_path(:cat => params[:cat], :item => it) %></td>
+        <td><%= link_to 'Edit Category', edit_category_path(:cat => params[:cat], :item => it) %></td>
       </tr>
     <% end %>
   </tbody>

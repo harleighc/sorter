@@ -1,24 +1,34 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
+  def update_list
+
+  end
+
+    def update_category
+     old_items = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
+     updated_items = old_items.update_all(:category => params[:newcat].try(:strip))
+     redirect_to root_path
+  end
 
 
-   def update_category
-     #@newcat = "BANK FEES"
-     @newcat = params["newcat"]
-     Item.where(:category => params[:cat] ).where(:item => params[:item]).update_all(:category => @newcat)
-     
-     #@newcat = params["newcat"]
-    # @group = Item.where(:category => params[:cat] ).where(:item => params[:item])
-    # @group = @group.update_all(:category => "BANK FEES")
-end
-     #@new = params[:newcat]
-     #@new = "BANK FEES"
-   # Item.where(:category => params[:cat] ).where(:item => params[:item]).update_all(:category => params[:newcat])
+#   def update_category
+#      puts "params: #{params.inspect}"
+#      puts "params[:item]: #{params[:item].strip.inspect}"
+#      puts "params[:cat]: #{params[:cat].strip.inspect}"
+#      puts "params[:newcat]: #{params[:newcat].try(:strip).inspect}"
+#      old_items = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
+
+#      puts "old items: #{old_items.inspect}"
+#      updated_items = old_items.update_all(:category => params[:newcat].try(:strip))
+#      puts "updated items: #{updated_items}"
+#      redirect_to root_path
+#   end
+
 
   def index
 
-
+@distinct2 = Categorytable.uniq.pluck(:owner)
     @cat = params[:cat]
     @distinct = Item.uniq.pluck(:category)
     @layout = params[:layout]
@@ -52,6 +62,7 @@ end
     #@multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
     @form = params[:form]
     @back_url =  session[:my_previous_url]
+    @live_categories = Categorytable.where(:owner => ["harleigh","system"])
  end
 
 
