@@ -1,0 +1,17 @@
+h2>New Category</h2>
+<% content_for :multiplecats do %>
+
+<% end %>
+<%= form_tag do %>
+<%= text_field_tag "newcategory" %>
+<%= submit_tag "submit" %>
+<% end %>
+
+
+<%= params[:newcategory] %>
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Categorytables</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>System</th>
+      <th>Owner</th>
+      <th>User</th>
+      <th>Rank</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @categorytables.each do |categorytable| %>
+      <tr>
+        <td><%= categorytable.name %></td>
+        <td><%= categorytable.system %></td>
+        <td><%= categorytable.owner %></td>
+        <td><%= categorytable.user_id %></td>
+        <td><%= categorytable.rank %></td>
+        <td><%= link_to 'Show', categorytable %></td>
+        <td><%= link_to 'Edit', edit_categorytable_path(categorytable) %></td>
+        <td><%= link_to 'Destroy', categorytable, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Categorytable', new_categorytable_path %>

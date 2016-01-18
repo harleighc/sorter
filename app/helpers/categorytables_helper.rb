@@ -1,0 +1,2 @@
+module CategorytablesHelper
+end

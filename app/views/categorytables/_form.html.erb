@@ -1,0 +1,37 @@
+<%= form_for(@categorytable) do |f| %>
+  <% if @categorytable.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@categorytable.errors.count, "error") %> prohibited this categorytable from being saved:</h2>
+
+      <ul>
+      <% @categorytable.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :system %><br>
+    <%= f.check_box :system %>
+  </div>
+  <div class="field">
+    <%= f.label :owner %><br>
+    <%= f.text_field :owner %>
+  </div>
+  <div class="field">
+    <%= f.label :user_id %><br>
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :rank %><br>
+    <%= f.number_field :rank %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

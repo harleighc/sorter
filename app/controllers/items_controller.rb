@@ -1,31 +1,37 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
-  def newcat
-   ##@newcat = params[:New]
-  end
+
+
+   def update_category
+     #@newcat = "BANK FEES"
+     @newcat = params["newcat"]
+     Item.where(:category => params[:cat] ).where(:item => params[:item]).update_all(:category => @newcat)
+     
+     #@newcat = params["newcat"]
+    # @group = Item.where(:category => params[:cat] ).where(:item => params[:item])
+    # @group = @group.update_all(:category => "BANK FEES")
+end
+     #@new = params[:newcat]
+     #@new = "BANK FEES"
+   # Item.where(:category => params[:cat] ).where(:item => params[:item]).update_all(:category => params[:newcat])
 
   def index
 
+
     @cat = params[:cat]
-    @it = Item.where("category = ?", params[:cat]).order(:value)
-
     @distinct = Item.uniq.pluck(:category)
-    @layout = params[:size]
+    @layout = params[:layout]
     @cattotals = Item.group(:category).sum("value * gst * multiplier")
-    @combinedview = Item.where("category = ?", params[:cat]).group(:item).sum(:value)
-    @combinedview = @combinedview.sort_by {|x,y|y}
-
-    ##Item.where('category = BANK FEES"').group(:item).sum(:value)
-    ##
-    ##combined view console Item.where('category = "BANK FEES"').group(:item).sum(:value)
-    #top is an array
-    @top = Item.where("category = ?", params[:cat]).where("item = ?", params[:itex]).order(:value)
-    # console test Item.select('item, value').where('category = "BANK FEES"').where('item = "a"').order('value desc') -tested
-    #bottom in a hash
-     @bottom = Item.select('item, sum(value)').where("category = ?", params[:cat]).where("item != ?", params[:itex]).group(:item).sum(:value)
-    @bottom = @bottom.sort_by {|x,y|y}
-    #Item.select('item, sum(value) as val').where('category = "BANK FEES"').where('item != "a"').order('val desc').group(:item).sum(:value)
+    @itemised = Item.where("category = ?", params[:cat]).order(:value)
+    @grouped = Item.where("category = ?", params[:cat]).group(:item).sum(:value)
+    @grouped = @grouped.sort_by {|x,y|y}
+    ##console @grouped  Item.where('category = "BANK FEES"').group(:item).sum(:value)
+    @expandgrouptop = Item.where("category = ?", params[:cat]).where("item = ?", params[:item]).order(:value)
+    # console @expandgrouptop Item.select('item, value').where('category = "BANK FEES"').where('item = "a"').order('value desc') -tested
+    @expandgroupbottom = Item.select('item, sum(value)').where("category = ?", params[:cat]).where("item != ?", params[:item]).group(:item).sum(:value)
+    @expandgroupbottom = @expandgroupbottom.sort_by {|x,y|y}
+    #consonle @expandgroupbottom Item.select('item, sum(value) as val').where('category = "BANK FEES"').where('item != "a"').group(:item).sum(:value)
 
 
 
@@ -35,7 +41,7 @@ class ItemsController < ApplicationController
   def show
   end
 
-  # GET /items/new
+  # GET /items/neww
   def new
     @item = Item.new
   end
@@ -45,6 +51,7 @@ class ItemsController < ApplicationController
     @distinct = Item.uniq.pluck(:category)
     #@multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
     @form = params[:form]
+    @back_url =  session[:my_previous_url]
  end
 
 
@@ -69,6 +76,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1.json
   def update
     @distinct = Item.uniq.pluck(:category)
+
     respond_to do |format|
       if @item.update(item_params)
         format.html { redirect_to @item, notice: 'Item was successfully updated.' }
@@ -106,9 +114,9 @@ class ItemsController < ApplicationController
 
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def item_params
-      params.require(:item).permit(:item, :value, :category, :status, :gst, :multiplier, :date, :identifier)
-    end
+def item_params
+     params.require(:item).permit(:item, :value, :category, :status, :gst, :multiplier, :date, :identifier, :newcat)
+end
 
 
 

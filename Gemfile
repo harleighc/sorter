@@ -53,8 +53,10 @@ group :development do
   gem 'bootstrap-sass','~> 2.3.1.0'
 
 gem 'devise'
-  
+
   gem 'titleize'
+
+  
 
   # have installed but unused gem 'active_record_union'
 end

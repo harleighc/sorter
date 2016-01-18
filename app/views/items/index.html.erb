@@ -1,20 +1,15 @@
 <p id="notice"><%= notice %></p>
 
-
-
+<h2><%= params[:form_fields] %></h2>
+<h2><%= params[:cat] %></h2>
+<h2><%= params[:item] %></h2>
 <% if user_signed_in? %>
 
 <h2>Categories</h2>
-
-<td><%= link_to 'Add new Category' , items_newcat_path %></td>
+<td><%= link_to 'Add new Category' , new_categorytable_path %></td>
 <% @distinct.each do |cat| %>
-<li><%= link_to cat , items_path(:cat => cat, :size => "large" ) %></li>
-
-
+<li><%= link_to cat , items_path(:cat => cat, :layout => "itemised" ) %></li>
 <% end %>
-
-
-
 
 
 <h2>Category Totals</h2>
@@ -22,11 +17,11 @@
 <td> <%= cat %>  <%=  tot  %> </td>
 <% end %>
 <h3><%= params[:cat] %></h3>
-<%= link_to "Itemised" , items_path(:cat => params[:cat], :size => "large" ) %>
-<%= link_to "Grouped" , items_path(:cat => params[:cat], :size => "small" ) %>
+<%= link_to "Itemised" , items_path(:cat => params[:cat], :layout => "itemised" ) %>
+<%= link_to "Grouped" , items_path(:cat => params[:cat], :layout => "grouped" ) %>
 
 
-<% if @layout == "medium" %>
+<% if @layout == "expandgroup" %>
 <table>
   <thead>
     <tr>
@@ -38,31 +33,31 @@
   </thead>
 
   <tbody>
-    <% @top.each do |i| %>
+    <% @expandgrouptop.each do |i| %>
 <tr>
         <td><%= i.item %></td>
         <td><%= i.value %></td>
         <td><%= 1 %></td>
         <td><%= nil %></td>
-        <td><%= link_to 'Edit Category' , edit_item_path(:id => i, :form => "category")%></td>
+  <td><%= link_to 'Edit Category' , items_multi_path(:id => i, :form => "category")%></td>
         <% end %>
   <tr>
-    <% @bottom.each do |k,v| %>
+    <% @expandgroupbottom.each do |k,v| %>
         <td><%= k %></td>
         <td><%= v %></td>
         <td><%= n = Item.where(:item => k).where(:category => params[:cat]).count(:item) %></td>
     <% if n > 1 %>
-        <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :size => "medium", :itex => k ) %></td>
+    <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :layout => "expandgroup", :item => k ) %></td>
     <% else %>
         <td><%= nil %></td>
         <%end%>
-        <td><%= link_to 'Edit Category' , items_multi_path(:itex => k, :form => "category")%></td>
+        <td><%= link_to 'Edit Category' , items_multi_path(:item => k, :cat => params[:cat])%></td>
 <tr>
        <% end %>
   </tbody>
 </table>
-    
-<% elsif @layout == "small" %>
+
+<% elsif @layout == "grouped" %>
 <table>
   <thead>
     <tr>
@@ -74,23 +69,23 @@
   </thead>
 
   <tbody>
-    <% @combinedview.each do |it,tot| %>
+    <% @grouped.each do |it,tot| %>
       <tr>
         <td><%= it %></td>
         <td><%= tot %></td>
         <td><%= n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %></td>
         <% if n > 1 %>
-        <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :size => "medium", :itex => it ) %></td>
+        <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ) %></td>
         <% else %>
         <td><%= nil %></td>
         <%end%>
-         <td><%= link_to 'Edit Category' , items_multi_path %></td>
+        <td><%= link_to 'Edit Category' , update_category_items_path(:cat => params[:cat], :item => it) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<% elsif @layout == "large" %>
+<% elsif @layout == "itemised" %>
 
 <table>
   <thead>
@@ -108,7 +103,7 @@
   </thead>
 
   <tbody>
-    <% @it.each do |it| %>
+    <% @itemised.each do |it| %>
       <tr>
         <td><%= it.item %></td>
         <td><%= it.value %></td>
@@ -121,17 +116,10 @@
         <td><%= link_to 'Show', (it) %></td>
         <td><%= link_to 'Edit Category' , edit_item_path(:id => it, :form => "category" ) %></td>
         <td><%= link_to 'Confirm' , edit_item_path(:id => it, :form => "status" ) %></td>
-
-
-
       </tr>
     <% end %>
   </tbody>
 </table>
-
-
-
-
 <% end %>
 <br>
 

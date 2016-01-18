@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @categorytable.name %>
+</p>
+
+<p>
+  <strong>System:</strong>
+  <%= @categorytable.system %>
+</p>
+
+<p>
+  <strong>Owner:</strong>
+  <%= @categorytable.owner %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @categorytable.user_id %>
+</p>
+
+<p>
+  <strong>Rank:</strong>
+  <%= @categorytable.rank %>
+</p>
+
+<%= link_to 'Edit', edit_categorytable_path(@categorytable) %> |
+<%= link_to 'Back', categorytables_path %>
