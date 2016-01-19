@@ -6,13 +6,15 @@ validates_presence_of :category
 
 
 
+
+
+
   def self.import(file)
-    x = File.open(file.path)
-    y = CSV.parse(x, headers: true)
-    y.each do |row|
-    z = row.to_hash
-    z[:identifier] = "UPLOAD7"
-      Item.create! z
+    x = CSV.read(file.path)
+    
+      x.each do |row|
+      Item.create(:item => row[0],:value => row[1],:category => row[2],:status => row[3],:gst => row[4],:multiplier => row[5],:date => row[6], :identifier => row[7])
+
     end
   end
 
