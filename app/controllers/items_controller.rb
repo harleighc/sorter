@@ -31,7 +31,7 @@ class ItemsController < ApplicationController
 
     @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
     @cat = params[:cat]
-    @distinct = Item.uniq.pluck(:category)
+    #@distinct = Item.uniq.pluck(:category)
     @layout = params[:layout]
     @cattotals = Item.group(:category).sum("value * gst * multiplier")
     @itemised = Item.where("category = ?", params[:cat]).order(:value)
@@ -59,11 +59,11 @@ class ItemsController < ApplicationController
 
   # GET /items/1/edit
   def edit
-    @distinct = Item.uniq.pluck(:category)
+    #@distinct = Item.uniq.pluck(:category)
     #@multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
     @form = params[:form]
     @back_url =  session[:my_previous_url]
-    @live_categories = Categorytable.where(:owner => ["harleigh","system"])
+    #@live_categories = Categorytable.where(:owner => ["harleigh","system"])
  end
 
 
