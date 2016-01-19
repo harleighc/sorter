@@ -28,7 +28,8 @@ class ItemsController < ApplicationController
 
   def index
 
-@distinct2 = Categorytable.uniq.pluck(:owner)
+
+    @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
     @cat = params[:cat]
     @distinct = Item.uniq.pluck(:category)
     @layout = params[:layout]

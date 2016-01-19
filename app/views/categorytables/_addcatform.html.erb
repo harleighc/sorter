@@ -16,6 +16,10 @@
     <%= f.text_field :name %>
   </div>
 
+  <div class="field">
+    <%= f.hidden_field :user_id  , :user_id => current_user.id %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

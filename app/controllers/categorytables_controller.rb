@@ -2,11 +2,6 @@ class CategorytablesController < ApplicationController
   before_action :set_categorytable, only: [:show, :edit, :update, :destroy]
 
 
-  def live_categories
-    @live_categories = Categorytable.where(:owner => ["harleigh","system"])
-    #@live_categories = @live_categories.map {|i| i.name }
-    #@distinct2 = Categorytable.uniq.pluck(:owner)
-  end
 
   # GET /categorytables
   # GET /categorytables.json
@@ -23,6 +18,7 @@ class CategorytablesController < ApplicationController
   # GET /categorytables/new
   def new
     @categorytable = Categorytable.new
+    @categorytable.user_id = current_user.id
   end
 
   # GET /categorytables/1/edit
@@ -34,6 +30,9 @@ class CategorytablesController < ApplicationController
   # POST /categorytables.json
   def create
     @categorytable = Categorytable.new(categorytable_params)
+
+    #@categorytable.user_id = current_user.id
+
 
     respond_to do |format|
       if @categorytable.save

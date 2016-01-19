@@ -1,16 +1,14 @@
-<%= @distinct %>
 
-<%= @distinct2 %>
 
 <p id="notice"><%= notice %></p>
 
-<h2><%= @live_categories %></h2>
+<%= current_user %>
 
 <% if user_signed_in? %>
 
 <h2>Categories</h2>
 <td><%= link_to 'Add new Category' , new_categorytable_path %></td>
-<% @distinct.each do |cat| %>
+<% @live_categories.each do |cat| %>
 <li><%= link_to cat , items_path(:cat => cat, :layout => "itemised" ) %></li>
 <% end %>
 
