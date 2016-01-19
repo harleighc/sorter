@@ -1,11 +1,16 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
-  def update_list
+  def edit_category
+      @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+  end
 
+  def update_list
+      
   end
 
     def update_category
+     
      old_items = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
      updated_items = old_items.update_all(:category => params[:newcat].try(:strip))
      redirect_to root_path
@@ -59,11 +64,13 @@ class ItemsController < ApplicationController
 
   # GET /items/1/edit
   def edit
-    #@distinct = Item.uniq.pluck(:category)
+    @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+    @distinct = Item.uniq.pluck(:category)
     #@multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
     @form = params[:form]
     @back_url =  session[:my_previous_url]
-    #@live_categories = Categorytable.where(:owner => ["harleigh","system"])
+
+
  end
 
 

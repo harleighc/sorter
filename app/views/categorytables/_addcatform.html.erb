@@ -12,12 +12,23 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %><br>
     <%= f.text_field :name %>
   </div>
 
   <div class="field">
     <%= f.hidden_field :user_id  , :user_id => current_user.id %>
+  </div>
+
+<div class="field">
+  <%= f.hidden_field :system, :value => false %>
+  </div>
+
+<div class="field">
+  <%= f.hidden_field :owner ,  :value => "user" %>
+  </div>
+
+<div class="field">
+  <%= f.hidden_field :rank ,  :value => 0 %>
   </div>
 
   <div class="actions">
