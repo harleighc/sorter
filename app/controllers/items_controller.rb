@@ -6,11 +6,11 @@ class ItemsController < ApplicationController
   end
 
   def update_list
-      
+
   end
 
     def update_category
-     
+
      old_items = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
      updated_items = old_items.update_all(:category => params[:newcat].try(:strip))
      redirect_to root_path
@@ -60,6 +60,8 @@ class ItemsController < ApplicationController
   # GET /items/neww
   def new
     @item = Item.new
+     @current_user = current_user.id
+
   end
 
   # GET /items/1/edit
@@ -79,6 +81,7 @@ class ItemsController < ApplicationController
   def create
     @distinct = Item.uniq.pluck(:category)
     @item = Item.new(item_params)
+     @current_user = current_user.id
 
     respond_to do |format|
       if @item.save
