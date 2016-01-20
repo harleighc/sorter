@@ -5,18 +5,34 @@ before_save :lowercase
 validates_presence_of :category
 
 
+def self.import(file)
+x = CSV.read(file.path)
+x = x.drop(1)
+x.each do |row|
+	row.delete_at(1)
+	row.delete_at(2)
+	row.collect! { |element| (element == "BF") ? "bank fees" : element }
 
+end
+x.each do |row|
+		row << 3
+		row << 0.15
+		row << 1
+		row << 11
+end
+csv = []
+ord = [0,1,3,4,5,6,2,7]
+x.each do |row|
+	 csv << row.values_at(*ord)
+end
 
-
-
-  def self.import(file)
-    x = CSV.read(file.path)
-    
-      x.each do |row|
-      Item.create(:item => row[0],:value => row[1],:category => row[2],:status => row[3],:gst => row[4],:multiplier => row[5],:date => row[6], :identifier => row[7])
+csv.each do |row|
+  Item.create(:item => row[0],:value => row[1],:category => row[2],:status => row[3],:gst => row[4],:multiplier => row[5],:date => row[6], :identifier => row[7])
 
     end
-  end
+
+end
+
 
  private
 
