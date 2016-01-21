@@ -15,7 +15,7 @@
  <div class="control-group">
    <%= f.label "Category", class: 'control-label' %>
     <div class="controls">
-      <%= f.select(:category, options_for_select(@distinct.map { |value| [ value, value ] }), { include_blank: false }) %>
+      <%= f.select(:category, options_for_select(@array_of_live_categories.map { |value| [ value, value ] }), { include_blank: false }) %>
 
 
 

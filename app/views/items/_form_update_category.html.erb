@@ -1,7 +1,7 @@
 <%= form_tag("/items/update_category") do  %>
 
 
-<%= select_tag(:newcat, options_for_select(@live_categories.map { |value| [value] }), { include_blank: false }) %>
+<%= select_tag(:newcat, options_for_select(@array_of_live_categories.map { |value| [value] }), { include_blank: false }) %>
 
 <%= hidden_field_tag :item , params[:item]%>
 <%= hidden_field_tag :cat , params[:cat]%>

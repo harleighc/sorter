@@ -2,7 +2,8 @@ class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
   def edit_category
-      @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+     #@live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name)
   end
 
   def update_list
@@ -36,12 +37,12 @@ class ItemsController < ApplicationController
     @runningtotalgst = Item.sum('value * gst * multiplier')
     @runningtotal = Item.sum(:value)
     @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name,:id,:user_id) if current_user
-    
+
     #the following 3 variables are used to test that all items have been categorised
-    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name)   
-    @total_of_live_categories = Item.where(:category => @array_of_live_categories).sum(:value) 
+    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name)
+    @total_of_live_categories = Item.where(:category => @array_of_live_categories).sum(:value)
     @total_from_db = Item.sum(:value) # needs an ID
-   
+
     @cat = params[:cat]
     #@live_categories_total = Item.where("category = live_categories[:name]").sum(:value)
     #@distinct = Item.uniq.pluck(:category)
@@ -74,11 +75,12 @@ class ItemsController < ApplicationController
 
   # GET /items/1/edit
   def edit
-    @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
-    @distinct = Item.uniq.pluck(:category)
+     @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name)
+   # @distinct = Item.uniq.pluck(:category)
     #@multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
     @form = params[:form]
     @back_url =  session[:my_previous_url]
+
 
 
  end
@@ -87,9 +89,10 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    @distinct = Item.uniq.pluck(:category)
+    #@distinct = Item.uniq.pluck(:category)
     @item = Item.new(item_params)
      @current_user = current_user.id
+
 
     respond_to do |format|
       if @item.save
@@ -106,6 +109,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1.json
   def update
     @distinct = Item.uniq.pluck(:category)
+
 
     respond_to do |format|
       if @item.update(item_params)
