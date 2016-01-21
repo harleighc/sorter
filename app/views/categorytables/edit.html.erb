@@ -1,6 +1,12 @@
 <h1>Editing Categorytable</h1>
 
-<%= render 'form' %>
 
+<%  if @form == "name" %>
+<%=  render 'form_edit_name'%>
+
+<%  elsif %>
+<%=  render 'form'%>
+
+<%end%>
 <%= link_to 'Show', @categorytable %> |
 <%= link_to 'Back', categorytables_path %>

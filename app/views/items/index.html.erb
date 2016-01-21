@@ -2,15 +2,22 @@
 
 <p id="notice"><%= notice %></p>
 <%=@live_categories  %>
+<%=  @runningtotal  %>
+<%=  @runningtotalgst  %>
 
-<%= current_user.id %>
+<%= current_user.id if current_user%>
 
 <% if user_signed_in? %>
 
 <h2>Categories</h2>
 <td><%= link_to 'Add new Category' , new_categorytable_path %></td>
-<% @live_categories.each do |cat| %>
-<li><%= link_to cat , items_path(:cat => cat, :layout => "itemised" ) %></li>
+<% @live_categories.each do |cat,id,owner| %>
+<li><%= link_to cat , items_path(:cat => cat, :layout => "itemised" ) %>
+<%= Item.where("category = ?", cat).sum(:value) %>
+<%= link_to "edit name" , edit_categorytable_path(:form => "name", :id => id) if owner != 0 %></li>
+
+
+
 <% end %>
 
 
@@ -18,6 +25,12 @@
 <% @cattotals.each do |cat,tot| %>
 <td> <%= cat %>  <%=  tot  %> </td>
 <% end %>
+
+<h2>Total</h2>
+<%=  @runningtotalgst  %>
+
+
+
 <h3><%= params[:cat] %></h3>
 <%= link_to "Itemised" , items_path(:cat => params[:cat], :layout => "itemised" ) %>
 <%= link_to "Grouped" , items_path(:cat => params[:cat], :layout => "grouped" ) %>

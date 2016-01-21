@@ -46,7 +46,7 @@ x.each do |row|
 
 x.each do |row|
 		row << 3
-		row << 0.15
+		row << 0.1304
 		row << 1
     row << 11
 end

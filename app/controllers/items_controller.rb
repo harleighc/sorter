@@ -33,12 +33,13 @@ class ItemsController < ApplicationController
 
   def index
 
-
-    @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+    @runningtotalgst = Item.sum('value * gst * multiplier')
+    @runningtotal = Item.sum(:value) # temporary
+    @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name,:id,:user_id) if current_user
     @cat = params[:cat]
     #@distinct = Item.uniq.pluck(:category)
     @layout = params[:layout]
-    @cattotals = Item.group(:category).sum("value * gst * multiplier")
+    @cattotals = Item.group(:category).sum('value * gst * multiplier')
     @itemised = Item.where("category = ?", params[:cat]).order(:value)
     @grouped = Item.where("category = ?", params[:cat]).group(:item).sum(:value)
     @grouped = @grouped.sort_by {|x,y|y}

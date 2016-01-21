@@ -5,6 +5,11 @@ class CategorytablesController < ApplicationController
 
   # GET /categorytables
   # GET /categorytables.json
+
+  def edit_name
+  end
+
+
   def index
     @categorytables = Categorytable.all
    # @distinct2 = Categorytable.uniq.pluck(:owner)
@@ -19,11 +24,12 @@ class CategorytablesController < ApplicationController
   def new
     @categorytable = Categorytable.new
     @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
-   
+
   end
 
   # GET /categorytables/1/edit
   def edit
+    @form = params[:form]
 
   end
 
@@ -32,7 +38,7 @@ class CategorytablesController < ApplicationController
   def create
     @categorytable = Categorytable.new(categorytable_params)
 
-   
+
 
 
     respond_to do |format|
