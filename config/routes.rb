@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
 
 get 'edit_category' => 'items#edit_category'
-  get 'categorytables/edit_name' => 'categorytables#edit'
+
  root to: 'items#index'
  resources :items do
 
@@ -20,3 +20,6 @@ collection {post :import}
    end
 
 end
+
+# get 'edit_category' => 'items#edit_category'
+# get 'categorytables/edit_name' => 'categorytables#edit'

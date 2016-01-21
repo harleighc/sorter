@@ -2,10 +2,11 @@
 
 <p id="notice"><%= notice %></p>
 <%=@live_categories  %>
-<%=  @runningtotal  %>
-<%=  @runningtotalgst  %>
+<%=  @total_of_live_categories == @total_from_db  %>
+
 
 <%= current_user.id if current_user%>
+<%= Item.where(:category => @livetest).sum(:value)   %>
 
 <% if user_signed_in? %>
 

@@ -34,9 +34,16 @@ class ItemsController < ApplicationController
   def index
 
     @runningtotalgst = Item.sum('value * gst * multiplier')
-    @runningtotal = Item.sum(:value) # temporary
+    @runningtotal = Item.sum(:value)
     @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name,:id,:user_id) if current_user
+    
+    #the following 3 variables are used to test that all items have been categorised
+    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name)   
+    @total_of_live_categories = Item.where(:category => @array_of_live_categories).sum(:value) 
+    @total_from_db = Item.sum(:value) # needs an ID
+   
     @cat = params[:cat]
+    #@live_categories_total = Item.where("category = live_categories[:name]").sum(:value)
     #@distinct = Item.uniq.pluck(:category)
     @layout = params[:layout]
     @cattotals = Item.group(:category).sum('value * gst * multiplier')
