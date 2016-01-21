@@ -50,13 +50,16 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 
-  gem 'bootstrap-sass','~> 2.3.1.0'
+  #gem 'bootstrap-sass','~> 2.3.1.0'
 
 gem 'devise'
 
-  gem 'titleize'
+ gem 'titleize'
 
-  
+gem 'bootstrap-sass', '~> 3.3.4.1'
+
+  gem 'autoprefixer-rails'
+
 
   # have installed but unused gem 'active_record_union'
 end
