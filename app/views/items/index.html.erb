@@ -2,6 +2,8 @@
 
 <p id="notice"><%= notice %></p>
 <%=@live_categories  %>
+<%= number_to_currency(@total_of_live_categories, :unit => "$") %>
+<%=@total_of_live_categories  %>
 <%=  @total_of_live_categories == @total_from_db  %>
 
 
@@ -14,7 +16,7 @@
 <td><%= link_to 'Add new Category' , new_categorytable_path %></td>
 <% @live_categories.each do |cat,id,owner| %>
 <li><%= link_to cat , items_path(:cat => cat, :layout => "itemised" ) %>
-<%= Item.where("category = ?", cat).sum(:value) %>
+  <%= number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$")  %>
 <%= link_to "edit name" , edit_categorytable_path(:form => "name", :id => id) if owner != 0 %></li>
 
 
@@ -28,7 +30,7 @@
 <% end %>
 
 <h2>Total</h2>
-<%=  @runningtotalgst  %>
+<%=  number_to_currency(@runningtotalgst,:unit => "$")  %>
 
 
 
@@ -52,7 +54,7 @@
     <% @expandgrouptop.each do |i| %>
 <tr>
         <td><%= i.item %></td>
-        <td><%= i.value %></td>
+  <td><%= number_to_currency(i.value,:unit => "$") %></td>
         <td><%= 1 %></td>
         <td><%= nil %></td>
         <td><%= link_to 'Edit Category' , edit_item_path(:id => i, :form => "category" ) %></td>
@@ -61,7 +63,7 @@
   <tr>
     <% @expandgroupbottom.each do |k,v| %>
         <td><%= k %></td>
-        <td><%= v %></td>
+    <td><%= number_to_currency(v, :unit => "$") %></td>
         <td><%= n = Item.where(:item => k).where(:category => params[:cat]).count(:item) %></td>
     <% if n > 1 %>
     <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :layout => "expandgroup", :item => k ) %></td>
@@ -89,7 +91,7 @@
     <% @grouped.each do |it,tot| %>
       <tr>
         <td><%= it %></td>
-        <td><%= tot %></td>
+        <td><%= number_to_currency(tot,:unit => "$") %></td>
         <td><%= n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %></td>
         <% if n > 1 %>
         <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ) %></td>
@@ -123,7 +125,7 @@
     <% @itemised.each do |it| %>
       <tr>
         <td><%= it.item %></td>
-        <td><%= it.value %></td>
+        <td><%= number_to_currency(it.value, :unit => "$") %></td>
         <td><%= it.category %></td>
         <td><%= it.status %></td>
         <td><%= it.gst %></td>
