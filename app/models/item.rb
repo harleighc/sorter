@@ -11,38 +11,50 @@ x = x.drop(7)
 
 
 x.each do |row|
+ case row[2]
+  when "A/P"
+    row[1] = row[4]
+    row[2] = "regular payment"
+  when "D/D"
+    row[1] = row[4]
+    row[2] = "regular payment"
+  when "BANK FEE"
+    row[1] = row[4]
+    row[2] = "bank fees"
+  when "INT"
+    row[1] = row[4]
+    row[2] = "interest"
+  when "WD"
+    row[1] = row[4]
+    row[2] = "bank fees"
+  when "EFTPOS"
+    row[1] = row[4]
+    row[2] = "unsorted"
+  when "ATM"
+    row[1] = row[4]
+    row[2] = "cash out"
+  when "DEBIT"
+    row[1] = row[5]
+    row[2] = "unsorted"
+  when "TFR IN"
+    row[1] = row[5]
+    row[2] = "transfer"
+  when "D/C"
+    row[1] = row[5]
+    row[2] = "income"
+  when "CREDIT"
+    row[1] = row[5]
+    row[2] = "income"
+  when "TRF OUT"
+    row[1] = row[5]
+    row[2] = "transfer"
+  else
+    row[1] = row[5]
+    row[2] = "unsorted"
 
-
-  	row[1] = row[4] if row[2] == "A/P"
-  	row[2] = "regular payment" if row[2] == "A/P"
-  row[1] = row[4] if row[2] == "D/D"
-  	row[2] = "regular payment" if row[2] == "D/D"
-  row[1] = row[4] if row[2] == "BANK FEE"
-    row[2] = "bank fees" if row[2] == "BANK FEE"
-  row[1] = row[4] if row[2] == "INT"
-    row[2] = "interest" if row[2] == "INT"
-  row[1] = row[4] if row[2] == "WD"
-    row[2] = "bank fees" if row[2] == "WD"
-  row[1] = row[4] if row[2] == "EFTPOS"
-    row[2] = "unsorted purchase" if row[2] == "EFTPOS"
-  row[1] = row[4] if row[2] == "ATM"
-  row[2] = "cash out" if row[2] == "ATM"
-
-
-  row[1] = row[5] if row[2] == "DEBIT"
-  	row[2] = "unsorted purchase" if row[2] == "DEBIT"
-	row[1] = row[5] if row[2] == "TFR IN"
-    row[2] = "transfer" if row[2] == "TFR IN"
-	row[1] = row[5] if row[2] == "D/C"
-    row[2] = "income" if row[2] == "D/C"
-   	row[1] = row[5] if row[2] == "CREDIT"
-    row[2] = "income" if row[2] == "CREDIT"
- 	row[1] = row[5] if row[2] == "TFR OUT"
-    row[2] = "transfer" if row[2] == "TFR OUT"
 
   	end
-
-
+  end
 
 x.each do |row|
 		row << 3
