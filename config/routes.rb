@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :categorytables
-
+  resources :login
 
 
 get 'edit_category' => 'items#edit_category'

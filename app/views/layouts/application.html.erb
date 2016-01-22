@@ -8,14 +8,9 @@
 </head>
 <body>
 
+<div class = "container">
+  <ul class = "nav-tabs">
 
-
-  
-  
-  
-  
-  
-  
     <% if current_user %>
   <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
 
@@ -26,8 +21,11 @@
 
   <p class="notice" ><%= notice %></p>
   <p class="alert" ><%= alert %></p>
+  </ul>
+
 
   <%= yield %>
+
 
 </body>
 </html>

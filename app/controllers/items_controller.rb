@@ -1,9 +1,14 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
+
+
+
+
   def edit_category
      #@live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
-    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name)
+    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+
   end
 
   def update_list
@@ -39,7 +44,8 @@ class ItemsController < ApplicationController
     @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name,:id,:user_id) if current_user
 
     #the following 3 variables are used to test that all items have been categorised
-    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name)
+    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+
     @total_of_live_categories = Item.where(:category => @array_of_live_categories).sum(:value)
     @total_from_db = Item.sum(:value) # needs an ID
 

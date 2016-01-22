@@ -24,12 +24,13 @@ class CategorytablesController < ApplicationController
   def new
     @categorytable = Categorytable.new
     @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
-
+   
   end
 
   # GET /categorytables/1/edit
   def edit
     @form = params[:form]
+
 
   end
 
