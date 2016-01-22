@@ -1,6 +1,4 @@
 
-<p id="notice"><%= notice %></p>
-
 
 
 
@@ -14,13 +12,13 @@
 <td><%= link_to 'Add new Category' , new_categorytable_path, class: "btn btn-default" %></td>
 
 <% @live_categories.each do |cat,id,owner| %>
-<td><%= link_to cat + "   " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") , items_path(:cat => cat, :layout => "itemised" ), class: "btn btn-default" %>
+<td><%= link_to cat + "   " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") , items_path(:cat => cat, :layout => "itemised" ), class: "btn btn-primary btn-lg btn-block" %>
 <%= link_to "edit name" , edit_categorytable_path(:form => "name", :id => id) if owner != 0 %></td>
 <% end %>
 
 </div>
 
-  <div class = "col-md-9" style="font-size:22px;">
+  <div class = "col-md-9" style="font-size:19px;">
 
 
 
@@ -36,8 +34,8 @@
 <% if @layout == "expandgroup" %>
 <table class="table table-hover">
    <colgroup>
-            <col class="col-md-7.5">
-            <col class="col-md-2.0">
+            <col class="col-md-9">
+            <col class="col-md-1.5">
             <col class="col-md-1.5">
         </colgroup>
 
@@ -136,7 +134,7 @@
         <td><%= link_to item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
     <i class="glyphicon glyphicon-zoom-in"></i>
           <%= link_to edit_item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
-    <i class="glyphicon glyphicon-ok"></i>   </td> 
+    <i class="glyphicon glyphicon-ok"></i>   </td>
 </tr>
 
 

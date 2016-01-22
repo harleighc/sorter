@@ -57,6 +57,7 @@ class ItemsController < ApplicationController
     @itemised = Item.where("category = ?", params[:cat]).order(:value)
     @grouped = Item.where("category = ?", params[:cat]).group(:item).sum(:value)
     @grouped = @grouped.sort_by {|x,y|y}
+
     ##console @grouped  Item.where('category = "BANK FEES"').group(:item).sum(:value)
     @expandgrouptop = Item.where("category = ?", params[:cat]).where("item = ?", params[:item]).order(:value)
     # console @expandgrouptop Item.select('item, value').where('category = "BANK FEES"').where('item = "a"').order('value desc') -tested
