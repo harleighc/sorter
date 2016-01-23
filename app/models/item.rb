@@ -74,7 +74,7 @@ x.each do |row|
 
 end
 csv.each do |row|
-  Item.create!(:item => row[0],:value => row[1],:category => row[2],:status => row[3],:gst => row[4],:multiplier => row[5],:date => row[6], :identifier => row[7])
+  Item.create(:item => row[0],:value => row[1],:category => row[2],:status => row[3],:gst => row[4],:multiplier => row[5],:date => row[6], :identifier => row[7])
 
     end
 
