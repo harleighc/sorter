@@ -76,7 +76,8 @@ class ItemsController < ApplicationController
   # GET /items/neww
   def new
     @item = Item.new
-     @current_user = current_user.id
+    @current_user = current_user.id
+     
 
   end
 

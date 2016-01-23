@@ -10,7 +10,7 @@ get 'edit_category' => 'items#edit_category'
  resources :items do
 
 
-match :update_category, via: [:get, :post], on: :collection  #-> url.com/items/update_category
+  match :update_category, via: [:get, :post], on: :collection  #-> url.com/items/update_category
 
 
 collection {post :import}

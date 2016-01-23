@@ -1,19 +1,21 @@
 
 
-
-
 <% if user_signed_in? %>
+
+
+
+##link_to 'Add new Category' , new_categorytable_path, class: "btn btn-default" %></td>
 
 
 <div class = "row">
   <div class = "col-md-3" >
 
 
-<td><%= link_to 'Add new Category' , new_categorytable_path, class: "btn btn-default" %></td>
+
 
 <% @live_categories.each do |cat,id,owner| %>
-<td><%= link_to cat + "   " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") , items_path(:cat => cat, :layout => "itemised" ), class: "btn btn-primary btn-lg btn-block" %>
-<%= link_to "edit name" , edit_categorytable_path(:form => "name", :id => id) if owner != 0 %></td>
+<td><%= link_to cat + "   " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") , items_path(:cat => cat, :layout => "itemised" ), class: "btn btn-primary btn-sq" %></td>
+
 <% end %>
 
 </div>
