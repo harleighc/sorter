@@ -77,7 +77,7 @@ class ItemsController < ApplicationController
   def new
     @item = Item.new
     @current_user = current_user.id
-     
+
 
   end
 
@@ -103,9 +103,12 @@ class ItemsController < ApplicationController
 
 
     respond_to do |format|
+      require 'byebug'
+      byebug
       if @item.save
         format.html { redirect_to root_path, notice: 'Item was successfully created.' }
         format.json { redirect_to root_path, status: :created, location: @item }
+
       else
         format.html { render :new }
         format.json { render json: @item.errors, status: :unprocessable_entity }
