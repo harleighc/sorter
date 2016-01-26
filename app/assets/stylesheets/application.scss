@@ -4,10 +4,19 @@
 
 body {
  // some css for homepage elements
- background-color: #e74c3c
+ background-color: white
    ;
 }
+.span3 {
+    height: 600px !important;
+    overflow: scroll;
+}
 
+.table th, .table td {
+     border-top: none !important;
+
+
+}
 
 .button {
   background-color: #08c;
@@ -16,7 +25,7 @@ body {
 }
 
 $buttonheight: 75px;
-body{background-color:#e74c3c; font-family:Tahoma, Geneva, sans-serif;}
+body{background-color:white; font-family:Tahoma, Geneva, sans-serif;}
 
 .button{width:75px; height:$buttonheight; text-align:left; margin-bottom:2px; border:4px solid white; border-radius:2px; color:white; font-size:12px;
     a{color:white; text-decoration:none; line-height:$buttonheight; width:100%; height:100%;  display:block;}

@@ -66,6 +66,7 @@ require 'byebug'
     @layout = params[:layout]
     @cattotals = Item.group(:category).sum('value * gst * multiplier')
     @itemised = Item.where("category = ?", params[:cat]).order(:value)
+
     @grouped = Item.where("category = ?", params[:cat]).group(:item).sum(:value)
     @grouped = @grouped.sort_by {|x,y|y}
 

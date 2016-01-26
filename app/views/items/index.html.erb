@@ -1,13 +1,11 @@
-    <% if current_user %>
-  <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+ <div class = container-fluid>
+<button type="button" class="btn btn-default navbar-btn">
+<% if current_user %>
+  <%= link_to "Sign Out", destroy_user_session_path, method: :delete %></button>
 
-
+</div>
 
 <% if user_signed_in? %>
-
-
-
-##link_to 'Add new Category' , new_categorytable_path, class: "btn btn-default" %></td>
 
 <div class = container-fluid>
 
@@ -85,14 +83,11 @@
 
 
 
-<%= link_to items_path(:cat => params[:cat], :layout => "itemised" ), class: "btn btn-default" do %>
-    <i class="glyphicon glyphicon-folder-open"></i>
-
-<% end %>
 
 
 
 <% if @layout == "expandgroup" %>
+    <div class="span3">
 <table class="table table-hover">
   <colgroup>
             <col class="col-md-1">
@@ -147,6 +142,7 @@
 
 <% elsif @layout == "grouped" %>
 
+<div class="span3">
 <table class="table table-hover">
   <colgroup>
             <col class="col-md-1">
@@ -182,7 +178,7 @@
 
 
 <% elsif @layout == "itemised" %>
-
+<div class="span3">
 <table class="table table-hover">
    <colgroup>
             <col class="col-md-7.5">
@@ -217,45 +213,14 @@
 
   </div>
 
-
-
-<h3>Download File</h3>
-<%= link_to "Report", items_path(format: "csv"), class: 'btn btn-default' %>
-<%= link_to 'New Company', new_item_path %>
-
-
-<h2>Category Totals</h2>
-<% @cattotals.each do |cat,tot| %>
-<td> <%= cat %>  <%=  tot  %> </td>
-<% end %>
-
-<h2>Total</h2>
-<%=  number_to_currency(@runningtotalgst,:unit => "$")  %>
-
-<%=@live_categories  %>
-<%= number_to_currency(@total_of_live_categories, :unit => "$") %>
-<%=@total_of_live_categories  %>
-<%=  @total_of_live_categories == @total_from_db  %>
-
-<%= current_user.id if current_user%>
-<%= Item.where(:category => @livetest).sum(:value)   %>
-
-
-<div class = "row">
-  <div class = "col-md-1"  >
-    <div class='e'>
-      <div class='long'>
-        <div class='sec'>
-      <%= link_to items_path%>
-          </div>
-        <div class='fir'>
-     <%= link_to items_path %>
-        </div>
-      </div>
-    </div>
-
+    
+</div>
+  </div>
 
   </div>
-  </div>
+
+
 <% end %>
 <% end %>
+
+
