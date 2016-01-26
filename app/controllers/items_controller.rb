@@ -3,7 +3,37 @@ class ItemsController < ApplicationController
 require 'byebug'
 
   def test
-     @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name,:id,:user_id) if current_user
+
+    @runningtotalgst = Item.sum('value * gst * multiplier')
+    @runningtotal = Item.sum(:value)
+    @live_categories_system = Categorytable.where(:user_id => 0).pluck(:name) if current_user
+    @live_categories_user = Categorytable.where(:user_id => current_user.id).pluck(:name) if current_user
+    @new_category_array = ["new","new","new","new","new","new"]
+    #@live_categories_system = Categorytable.where(:user_id => 0).pluck(:name) if current_user
+    #@live_categories_user = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name,:id,:user_id) if current_user
+    #the following 3 variables are used to test that all items have been categorised
+    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+
+    @total_of_live_categories = Item.where(:category => @array_of_live_categories).sum(:value)
+    @total_from_db = Item.sum(:value) # needs an ID
+
+    @cat = params[:cat]
+    #@live_categories_total = Item.where("category = live_categories[:name]").sum(:value)
+    #@distinct = Item.uniq.pluck(:category)
+    @layout = params[:layout]
+    @cattotals = Item.group(:category).sum('value * gst * multiplier')
+    @itemised = Item.where("category = ?", params[:cat]).order(:value)
+
+    @grouped = Item.where("category = ?", params[:cat]).group(:item).sum(:value)
+    @grouped = @grouped.sort_by {|x,y|y}
+
+    ##console @grouped  Item.where('category = "BANK FEES"').group(:item).sum(:value)
+    @expandgrouptop = Item.where("category = ?", params[:cat]).where("item = ?", params[:item]).order(:value)
+    # console @expandgrouptop Item.select('item, value').where('category = "BANK FEES"').where('item = "a"').order('value desc') -tested
+    @expandgroupbottom = Item.select('item, sum(value)').where("category = ?", params[:cat]).where("item != ?", params[:item]).group(:item).sum(:value)
+    @expandgroupbottom = @expandgroupbottom.sort_by {|x,y|y}
+    #consonle @expandgroupbottom Item.select('item, sum(value) as val').where('category = "BANK FEES"').where('item != "a"').group(:item).sum(:value)
+
   end
 
 
