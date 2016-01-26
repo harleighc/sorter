@@ -4,72 +4,50 @@
 
 body {
  // some css for homepage elements
- background-color: #95CAE4
+ background-color: #e74c3c
    ;
 }
 
 
-
-.btn-circle {
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 1.428571429;
-  border-radius: 15px;
-}
-.btn-circle.btn-lg {
-  width: 50px;
-  height: 50px;
-  padding: 10px 16px;
-  font-size: 18px;
-  line-height: 1.33;
-  border-radius: 25px;
-}
-.btn-circle.btn-xl {
-  width: 70px;
-  height: 70px;
-  padding: 10px 16px;
-  font-size: 24px;
-  line-height: 1.33;
-  border-radius: 35px;
+.button {
+  background-color: #08c;
+  border-color: #08c;
+  border:4px solid white; border-radius:2px;
 }
 
+$buttonheight: 75px;
+body{background-color:#e74c3c; font-family:Tahoma, Geneva, sans-serif;}
 
-.btn-sq {
-  width: 100px !important;
-  height: 100px !important;
-  font-size: 10px;
-  background: #95CAE4 ;
-    color: #00FF00 ;
+.button{width:75px; height:$buttonheight; text-align:left; margin-bottom:2px; border:4px solid white; border-radius:2px; color:white; font-size:12px;
+    a{color:white; text-decoration:none; line-height:$buttonheight; width:100%; height:100%;  display:block;}
+  overflow:hidden; position:relative;
+  .first, .second{width:75px; display:inline-block; float:left;}
+}
+.eleven{
+  @extend .button;
+  transition:all 0.5s;
 }
 
+.eleven{
+   @extend .style3;
+ }
 
-
-.btn-sq-lg {
-  width: 150px !important;
-  height: 150px !important;
-}
-
-.btn-sq {
-  width: 100px !important;
-  height: 100px !important;
-  font-size: 10px;
-  background: #95CAE4 ;
-    color: #00FF00 ;
-}
-.btn-danger-text {
-  color: #bd362f;
-}
-.btn-sq-sm {
-  width: 50px !important;
-  height: 50px !important;
-  font-size: 10px;
+.style3{
+  background-size:75px 75px;
+  .second{
+  a{
+    color:#3BB878;
+    letter-spacing:2px;
+  }}
+  .elong{transition:all 0.5s;position:relative;}
 }
 
-.btn-sq-xs {
-  width: 25px !important;
-  height: 25px !important;
-  padding:2px;
+.eleven{
+  .elong{width:150px; left:-75px;}
+  .secondary{color:white;}
 }
+
+.eleven:hover, .eleven:focus{border:4px solid #3BB878;}
+
+.eleven:hover .elong, .eleven:focus .elong{left:0px;}
+

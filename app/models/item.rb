@@ -1,13 +1,13 @@
 class Item < ActiveRecord::Base
 before_save :update_status
 before_save :update_status2
-validates_presence_of :category
+#validates_presence_of :category
 
 
 def self.import(file)
 x = CSV.read(file.path)
-x = x.drop(7)
 
+x = x.drop(7)
 
 
 x.each do |row|

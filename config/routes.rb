@@ -1,10 +1,15 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :categorytables
-  resources :login
+  
+  resources :csv
 
 
-get 'edit_category' => 'items#edit_category'
+  match 'items/csv' => 'items#csv', :via => [:get, :post]
+  match 'items/login' => 'items#login', :via => [:get, :post]
+  match 'items/test' => 'items#test', :via => [:get, :post]
+
+  get 'edit_category' => 'items#edit_category'
 
  root to: 'items#index'
  resources :items do

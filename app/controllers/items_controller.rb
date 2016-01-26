@@ -1,5 +1,11 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
+require 'byebug'
+
+  def test
+     @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name,:id,:user_id) if current_user
+  end
+
 
 
 
@@ -39,10 +45,15 @@ class ItemsController < ApplicationController
 
   def index
 
+
+
     @runningtotalgst = Item.sum('value * gst * multiplier')
     @runningtotal = Item.sum(:value)
-    @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name,:id,:user_id) if current_user
-
+    @live_categories_system = Categorytable.where(:user_id => 0).pluck(:name) if current_user
+    @live_categories_user = Categorytable.where(:user_id => current_user.id).pluck(:name) if current_user
+    @new_category_array = ["new","new","new","new","new","new"]
+    #@live_categories_system = Categorytable.where(:user_id => 0).pluck(:name) if current_user
+    #@live_categories_user = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name,:id,:user_id) if current_user
     #the following 3 variables are used to test that all items have been categorised
     @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
 
@@ -97,17 +108,17 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
+
     #@distinct = Item.uniq.pluck(:category)
     @item = Item.new(item_params)
      @current_user = current_user.id
 
 
     respond_to do |format|
-      require 'byebug'
-      byebug
+
       if @item.save
-        format.html { redirect_to root_path, notice: 'Item was successfully created.' }
-        format.json { redirect_to root_path, status: :created, location: @item }
+        format.html { redirect_to @item, notice: 'Item was successfully created.' }
+        format.json {render :show, status: :created, location: @item }
 
       else
         format.html { render :new }
@@ -124,8 +135,8 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.update(item_params)
-        format.html { redirect_to root_path, notice: 'Item was successfully updated.' }
-        format.json { redirect_to root_path, status: :ok, location: @item }
+        format.html { redirect_to @item, notice: 'Item was successfully updated.' }
+        format.json {  render :show, status: :ok, location: @item }
       else
         format.html { render :edit }
         format.json { render json: @item.errors, status: :unprocessable_entity }
@@ -146,8 +157,11 @@ class ItemsController < ApplicationController
   end
 
    def import
+
+
      Item.import(params[:file])
      redirect_to items_path, notice: "Companies Added Succesfully"
+
    end
 
   private
