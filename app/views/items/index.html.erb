@@ -13,71 +13,35 @@
   <div class = "col-md-1"  >
 
     <% @live_categories_system[0..5].each do |cat| %>
-
- <div class='eleven'>
-      <div class='elong'>
-        <div class='second'>
-      <%= link_to number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$"), items_path(:cat => cat, :layout => "grouped" ) %>
-          </div>
-        <div class='first'>
-          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %>
-        </div>
-      </div>
-    </div>
-
- <% end %>
+       <a class="btn btn-default btn-block"
+          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %></a>
+<% end %>
 </div>
 
     <div class = "col-md-1"  >
-
       <% @live_categories_system[6..11].each do |cat| %>
-
- <div class='eleven'>
-      <div class='elong'>
-        <div class='second'>
-      <%= link_to number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$"), items_path(:cat => cat, :layout => "grouped" ) %>
-          </div>
-        <div class='first'>
-          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %>
-        </div>
-      </div>
-    </div>
-
- <% end %>
+       <a class="btn btn-default btn-block"
+          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %></a>
+<% end %>
 </div>
+
 
  <div class = "col-md-1"  >
 
  <% @live_categories_user.each do |cat| %>
+       <a class="btn btn-default btn-block"
+          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %></a>
+<% end %>
 
- <div class='eleven'>
-      <div class='elong'>
-        <div class='second'>
-      <%= link_to number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$"), items_path(:cat => cat, :layout => "grouped" ) %>
-          </div>
-        <div class='first'>
-          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %>
-        </div>
-      </div>
-    </div>
 
- <% end %>
 <% n = @live_categories_user.length %>
 <% @new_category_array[n..6].each do |cat| %>
-
- <div class='eleven'>
-      <div class='elong'>
-        <div class='second'>
-      <%= link_to cat, new_categorytable_path %>
-          </div>
-        <div class='first'>
-          <%= link_to cat, new_categorytable_path %>
-        </div>
-      </div>
-    </div>
-
- <% end %>
+       <a class="btn btn-default btn-block"
+          <%= link_to cat, new_categorytable_path %></a>
+<% end %>
 </div>
+
+
 
   <div class = "col-md-9" style="font-size:19px;">
 
@@ -223,4 +187,13 @@
 <% end %>
 <% end %>
 
+
+<h2>Category Totals</h2>
+<% @cattotals.each do |cat,tot| %>
+<td> <%= cat %>  <%=  tot  %> </td>
+<% end %>
+
+
+
+<%=  @total_of_live_categories %>
 
