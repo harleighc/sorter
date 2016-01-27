@@ -10,45 +10,37 @@
 <div class = container-fluid>
 
 <div class = "row">
-  <div class = "col-md-1"  >
+  <div class = "col-md-3"  >
 
     <% @live_categories_system[0..5].each do |cat| %>
+    <% text = cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") %>
        <a class="btn btn-default btn-block"
-          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %></a>
-<% end %>
-</div>
+          <%= link_to text , items_path(:cat => cat, :layout => "grouped" ) %>
 
-    <div class = "col-md-1"  >
+<% end %>
+
       <% @live_categories_system[6..11].each do |cat| %>
+          <% text = cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") %>
        <a class="btn btn-default btn-block"
-          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %></a>
+    <%= link_to text, items_path(:cat => cat, :layout => "grouped" ) %>
 <% end %>
-</div>
 
-
- <div class = "col-md-1"  >
 
  <% @live_categories_user.each do |cat| %>
        <a class="btn btn-default btn-block"
-          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %></a>
+          <%= link_to cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$"), items_path(:cat => cat, :layout => "grouped" ) %>
 <% end %>
 
 
 <% n = @live_categories_user.length %>
-<% @new_category_array[n..6].each do |cat| %>
-       <a class="btn btn-default btn-block"
-          <%= link_to cat, new_categorytable_path %></a>
-<% end %>
+<a class="btn btn-default btn-block"
+    <%= link_to "new" , new_categorytable_path %>
+
 </div>
 
 
 
   <div class = "col-md-9" style="font-size:19px;">
-
-
-
-
-
 
 <% if @layout == "expandgroup" %>
     <div class="span3">
@@ -59,7 +51,6 @@
             <col class="col-md-2.0">
             <col class="col-md-1">
         </colgroup>
-
 
   <tbody>
     <% @expandgrouptop.each do |i| %>
@@ -83,17 +74,19 @@
         </colgroup>
 
     <% @expandgroupbottom.each do |it,tot| %>
-  <% n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %>
-     <% if n > 1 %>
+ <td> <% n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %>
+       <% case n %>
+        <% when 1 %>
+        <%= nil %>
+        <% else %>
+        <%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %><i class="glyphicon glyphicon-folder-open"></i></td>
 
-        <td><%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %><i class="glyphicon glyphicon-folder-open"></i></td>
-
-
+<% end %>
         <% end %>
         <td><%= link_to it ,edit_category_path(:cat => params[:cat], :item => it) %></td>
         <td><%= number_to_currency(tot,:unit => "$") %></td>
 
-     <% end %>
+
 
         <td><%= link_to edit_item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
     <i class="glyphicon glyphicon-ok"></i></td>
@@ -118,13 +111,14 @@
   <tbody>
    <% @grouped.each do |it,tot| %>
       <tr>
-        <% n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %>
-        <% if n > 1 %>
+      <td><% n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %>
+        <% case n %>
+        <% when 1 %>
+        <%= nil %>
+        <% else %>
+       <%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %><i class="glyphicon glyphicon-folder-open"></i></td>
 
-        <td><%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %>
-    <i class="glyphicon glyphicon-folder-open"></i></td>
-
-       <% end %>
+        <% end %>
         <% end %>
         <td><%= link_to it ,edit_category_path(:cat => params[:cat], :item => it) %></td>
         <td><%= number_to_currency(tot,:unit => "$") %></td>
@@ -179,9 +173,7 @@
 
 
 </div>
-  </div>
 
-  </div>
 <%=  @total_of_live_categories == @total_from_db  %>
 
 <% end %>
@@ -195,5 +187,5 @@
 
 
 
-<%=  @total_of_live_categories %>
+
 
