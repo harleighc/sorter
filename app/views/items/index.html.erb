@@ -1,158 +1,151 @@
-
-
-<p id="notice"><%= notice %></p>
-<%=@live_categories  %>
-<%= number_to_currency(@total_of_live_categories, :unit => "$") %>
-<%=@total_of_live_categories  %>
-<%=  @total_of_live_categories == @total_from_db  %>
-
-
-<%= current_user.id if current_user%>
-<%= Item.where(:category => @livetest).sum(:value)   %>
+<div class = container-fluid>
+<button type="button" class="btn btn-default navbar-btn">
+<% if current_user %>
+  <%= link_to "Sign Out", destroy_user_session_path, method: :delete %></button>
+</div>
 
 <% if user_signed_in? %>
 
-<h2>Categories</h2>
-<td><%= link_to 'Add new Category' , new_categorytable_path %></td>
-<% @live_categories.each do |cat,id,owner| %>
-<li><%= link_to cat , items_path(:cat => cat, :layout => "itemised" ) %>
-  <%= number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$")  %>
-<%= link_to "edit name" , edit_categorytable_path(:form => "name", :id => id) if owner != 0 %></li>
+<div class = container-fluid>
+
+<div class = "row">
+  <div class = "col-md-3"  >
+
+   <% @live_categories_system[0..5].each do |cat| %>
+    <button type="button" class="btn btn-default btn-block" >
+      <% text = cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") %>
+          <%= link_to text , items_path(:cat => cat, :layout => "grouped" ) %>
+            <% end %></button>
+
+    <% @live_categories_system[6..11].each do |cat| %>
+      <button type="button" class="btn btn-default btn-block" >
+       <% text = cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") %>
+          <%= link_to text, items_path(:cat => cat, :layout => "grouped" ) %>
+            <% end %></button>
+
+   <% @live_categories_user.each do |cat| %>
+        <button type="button" class="btn btn-default btn-block" >
+          <%= link_to cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$"), items_path(:cat => cat, :layout => "grouped" ) %>
+            <% end %></button>
+
+    <% n = @live_categories_user.length %>
+          <button type="button" class="btn btn-default btn-block" >
+      <%= link_to "new" , new_categorytable_path %></button>
+
+</div>
 
 
 
+<div class = "col-md-9" >
+  <div class="page-header">
+  <h1> <%= params[:cat] %></h1>
+</div>
+   <div class="span3">
+      <table class="table table-hover">
+        <colgroup>
+                  <col class="col-md-1">
+                  <col class="col-md-8">
+                  <col class="col-md-2.0">
+                  <col class="col-md-1">
+
+<% if @layout == "expandgroup" %>
+<tbody>
+    <% @expandgrouptop.each do |i| %>
+<tr>
+    <td><%= link_to items_path(:cat => params[:cat], :layout => "grouped" ), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-folder-close"></i></td>
+    <td><%= link_to i.item  , edit_item_path(:id => i, :form => "category" ) %></td>
+    <td><%= number_to_currency(i.value, :unit => "$") %></td>
+    <td><%= link_to edit_item_path(:id => i, :form => "status" ), class: "btn btn-default" do %><i class="glyphicon glyphicon-ok"></i></td>
+       <% end %>
+    <% end %>
+  <% end %>
+<tr>
+
+
+    <% @expandgroupbottom.each do |it,tot| %>
+<tr>
+    <td><% n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %>
+      <% case n %>
+        <% when 1 %>
+          <%= nil %>
+        <% else %>
+          <%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %><i class="glyphicon glyphicon-folder-open"></i></td>
+        <% end %>
+       <% end %>
+     <td><%= link_to it ,edit_category_path(:cat => params[:cat], :item => it) %></td>
+     <td><%= number_to_currency(tot,:unit => "$") %></td>
+     <td><%= link_to edit_confirms_path(:cat => params[:cat], :item => it), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-ok"></i></td>
+      <%end%>
+    <% end %>
+</tr>
+
+</tbody>
+
+
+<% elsif @layout == "grouped" %>
+ <tbody>
+   <% @grouped.each do |it,tot| %>
+      <tr>
+      <td><% n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %>
+        <% case n %>
+        <% when 1 %>
+        <%= nil %>
+        <% else %>
+       <%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %><i class="glyphicon glyphicon-folder-open"></i></td>
+
+        <% end %>
+        <% end %>
+        <td><%= link_to it ,edit_category_path(:cat => params[:cat], :item => it) %></td>
+        <td><%= number_to_currency(tot,:unit => "$") %></td>
+
+        <td><%= link_to edit_confirms_path(:cat => params[:cat], :item => it), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-ok"></i></td>
+
+        <%end%>
+      <% end %>
+    </tr>
+  </tbody>
+
+
+
+<% elsif @layout == "itemised" %>
+  <tbody>
+    <% @itemised.each do |it| %>
+      <tr>
+        <td><%= link_to it.item  , edit_item_path(:id => it, :form => "category" ) %></td>
+        <td><%= number_to_currency(it.value, :unit => "$") %></td>
+        <td><%= link_to item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-zoom-in"></i>
+          <%= link_to edit_item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-ok"></i>   </td>
+    <% end %>
+    <% end %>
+    <% end %>
+    <% end %>
+     </tr>
+  </tbody>
+
+
+</colgroup>
+ </table>
+</div>
+ </div>
+</div>
+</div>
+
+<% end %>
 <% end %>
 
 
-<h2>Category Totals</h2>
+<%=  @total_of_live_categories == @total_from_db  %>
+
+<h2>GST Totals</h2>
 <% @cattotals.each do |cat,tot| %>
 <td> <%= cat %>  <%=  tot  %> </td>
 <% end %>
 
-<h2>Total</h2>
-<%=  number_to_currency(@runningtotalgst,:unit => "$")  %>
 
 
 
-<h3><%= params[:cat] %></h3>
-<%= link_to "Itemised" , items_path(:cat => params[:cat], :layout => "itemised" ) %>
-<%= link_to "Grouped" , items_path(:cat => params[:cat], :layout => "grouped" ) %>
-
-
-<% if @layout == "expandgroup" %>
-<table>
-  <thead>
-    <tr>
-      <th>Item</th>
-      <th>Value</th>
-      <th>#items</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @expandgrouptop.each do |i| %>
-<tr>
-        <td><%= i.item %></td>
-  <td><%= number_to_currency(i.value,:unit => "$") %></td>
-        <td><%= 1 %></td>
-        <td><%= nil %></td>
-        <td><%= link_to 'Edit Category' , edit_item_path(:id => i, :form => "category" ) %></td>
-
-        <% end %>
-  <tr>
-    <% @expandgroupbottom.each do |k,v| %>
-        <td><%= k %></td>
-    <td><%= number_to_currency(v, :unit => "$") %></td>
-        <td><%= n = Item.where(:item => k).where(:category => params[:cat]).count(:item) %></td>
-    <% if n > 1 %>
-    <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :layout => "expandgroup", :item => k ) %></td>
-    <% else %>
-        <td><%= nil %></td>
-        <%end%>
-       <td><%= link_to 'Edit Category', edit_category_path(:cat => params[:cat], :item => k) %></td>
-<tr>
-       <% end %>
-  </tbody>
-</table>
-
-<% elsif @layout == "grouped" %>
-<table>
-  <thead>
-    <tr>
-      <th>Item</th>
-      <th>Value</th>
-      <th>#items</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @grouped.each do |it,tot| %>
-      <tr>
-        <td><%= it %></td>
-        <td><%= number_to_currency(tot,:unit => "$") %></td>
-        <td><%= n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %></td>
-        <% if n > 1 %>
-        <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ) %></td>
-        <% else %>
-        <td><%= nil %></td>
-        <%end%>
-        <td><%= link_to 'Edit Category', edit_category_path(:cat => params[:cat], :item => it) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<% elsif @layout == "itemised" %>
-
-<table>
-  <thead>
-    <tr>
-      <th>Item</th>
-      <th>Value</th>
-      <th>Category</th>
-      <th>Status</th>
-      <th>Gst</th>
-      <th>Multiplier</th>
-      <th>Date</th>
-      <th>Identifier</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @itemised.each do |it| %>
-      <tr>
-        <td><%= it.item %></td>
-        <td><%= number_to_currency(it.value, :unit => "$") %></td>
-        <td><%= it.category %></td>
-        <td><%= it.status %></td>
-        <td><%= it.gst %></td>
-        <td><%= it.multiplier %></td>
-        <td><%= it.date %></td>
-        <td><%= it.identifier %></td>
-        <td><%= link_to 'Show', (it) %></td>
-        <td><%= link_to 'Edit Category' , edit_item_path(:id => it, :form => "category" ) %></td>
-        <td><%= link_to 'Confirm' , edit_item_path(:id => it, :form => "status" ) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<% end %>
-<br>
-
-
-
-<h3>Import Companies</h3>
-<%= form_tag import_items_path, multipart: true do %>
-<%= file_field_tag :file %>
-<%= submit_tag "Import Companies", class: 'btn btn-default'%>
-
-
-<h3>Download File</h3>
-<%= link_to "Report", items_path(format: "csv"), class: 'btn btn-default' %>
-<%= link_to 'New Company', new_item_path %>
-
-<% end %>
-<% end %>

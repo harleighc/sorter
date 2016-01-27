@@ -1,13 +1,13 @@
 class Item < ActiveRecord::Base
 before_save :update_status
 before_save :update_status2
-validates_presence_of :category
+#validates_presence_of :category
 
 
 def self.import(file)
 x = CSV.read(file.path)
-x = x.drop(7)
 
+x = x.drop(7)
 
 
 x.each do |row|
@@ -60,7 +60,7 @@ x.each do |row|
 		row << 3
 		row << 0.1304
 		row << 1
-    row << 11
+  row << 88
 end
 
 csv = []
@@ -74,7 +74,7 @@ x.each do |row|
 
 end
 csv.each do |row|
-  Item.create!(:item => row[0],:value => row[1],:category => row[2],:status => row[3],:gst => row[4],:multiplier => row[5],:date => row[6], :identifier => row[7])
+  Item.create(:item => row[0],:value => row[1],:category => row[2],:status => row[3],:gst => row[4],:multiplier => row[5],:date => row[6], :identifier => row[7])
 
     end
 

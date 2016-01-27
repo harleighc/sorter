@@ -1,0 +1,162 @@
+
+
+<p id="notice"><%= notice %></p>
+
+
+
+
+<% if user_signed_in? %>
+
+
+<div class = "row">
+  <div class = "col-md-3" >
+
+
+<td><%= link_to 'Add new Category' , new_categorytable_path, class: "btn btn-default" %></td>
+
+<% @live_categories.each do |cat,id,owner| %>
+<li><%= link_to cat + "   " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") , items_path(:cat => cat, :layout => "itemised" ), class: "btn btn-default" %>
+<%= link_to "edit name" , edit_categorytable_path(:form => "name", :id => id) if owner != 0 %></li>
+<% end %>
+
+</div>
+
+  <div class = "col-md-9" >
+
+
+
+<%= link_to "Itemised" , items_path(:cat => params[:cat], :layout => "itemised" ) %>
+<%= link_to "Grouped" , items_path(:cat => params[:cat], :layout => "grouped" ) %>
+
+
+
+
+<% if @layout == "expandgroup" %>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Value</th>
+      <th>#items</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @expandgrouptop.each do |i| %>
+<tr>
+        <td><%= i.item %></td>
+  <td><%= number_to_currency(i.value,:unit => "$") %></td>
+        <td><%= 1 %></td>
+        <td><%= nil %></td>
+        <td><%= link_to 'Edit Category' , edit_item_path(:id => i, :form => "category" ) %></td>
+
+        <% end %>
+  <tr>
+    <% @expandgroupbottom.each do |k,v| %>
+        <td><%= k %></td>
+    <td><%= number_to_currency(v, :unit => "$") %></td>
+        <td><%= n = Item.where(:item => k).where(:category => params[:cat]).count(:item) %></td>
+    <% if n > 1 %>
+    <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :layout => "expandgroup", :item => k ) %></td>
+    <% else %>
+        <td><%= nil %></td>
+        <%end%>
+       <td><%= link_to 'Edit Category', edit_category_path(:cat => params[:cat], :item => k) %></td>
+<tr>
+       <% end %>
+  </tbody>
+</table>
+
+<% elsif @layout == "grouped" %>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Value</th>
+      <th>#items</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @grouped.each do |it,tot| %>
+      <tr>
+        <td><%= it %></td>
+        <td><%= number_to_currency(tot,:unit => "$") %></td>
+        <td><%= n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %></td>
+        <% if n > 1 %>
+        <td><%= link_to "Expand group" , items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ) %></td>
+        <% else %>
+        <td><%= nil %></td>
+        <%end%>
+        <td><%= link_to 'Edit Category', edit_category_path(:cat => params[:cat], :item => it) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% elsif @layout == "itemised" %>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Value</th>
+
+
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @itemised.each do |it| %>
+      <tr>
+        <td><%= it.item %></td>
+        <td><%= number_to_currency(it.value, :unit => "$") %></td>
+
+
+        <td><%= link_to 'Show', (it) %></td>
+        <td><%= link_to 'Edit Category' , edit_item_path(:id => it, :form => "category" ) %></td>
+        <td><%= link_to 'Confirm' , edit_item_path(:id => it, :form => "status" ), type:"button", class:"btn btn-default btn-circle", class:"glyphicon glyphicon-ok"  %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>
+<br>
+
+</div>
+  </div>
+
+<h3>Import Companies</h3>
+<%= form_tag import_items_path, multipart: true do %>
+<%= file_field_tag :file %>
+<%= submit_tag "Import Companies", class: 'btn btn-default'%>
+
+
+<h3>Download File</h3>
+<%= link_to "Report", items_path(format: "csv"), class: 'btn btn-default' %>
+<%= link_to 'New Company', new_item_path %>
+
+
+<h2>Category Totals</h2>
+<% @cattotals.each do |cat,tot| %>
+<td> <%= cat %>  <%=  tot  %> </td>
+<% end %>
+
+<h2>Total</h2>
+<%=  number_to_currency(@runningtotalgst,:unit => "$")  %>
+
+<%=@live_categories  %>
+<%= number_to_currency(@total_of_live_categories, :unit => "$") %>
+<%=@total_of_live_categories  %>
+<%=  @total_of_live_categories == @total_from_db  %>
+
+<%= current_user.id if current_user%>
+<%= Item.where(:category => @livetest).sum(:value)   %>
+
+
+<% end %>
+<% end %>

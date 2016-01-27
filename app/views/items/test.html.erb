@@ -1,0 +1,199 @@
+ <div class = container-fluid>
+<button type="button" class="btn btn-default navbar-btn">
+<% if current_user %>
+  <%= link_to "Sign Out", destroy_user_session_path, method: :delete %></button>
+
+</div>
+
+<% if user_signed_in? %>
+
+<div class = container-fluid>
+
+<div class = "row">
+  <div class = "col-md-1"  >
+
+    <% @live_categories_system[0..5].each do |cat| %>
+       <a class="btn btn-default btn-block"
+          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %></a>
+<% end %>
+</div>
+
+    <div class = "col-md-1"  >
+      <% @live_categories_system[6..11].each do |cat| %>
+       <a class="btn btn-default btn-block"
+          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %></a>
+<% end %>
+</div>
+
+
+ <div class = "col-md-1"  >
+
+ <% @live_categories_user.each do |cat| %>
+       <a class="btn btn-default btn-block"
+          <%= link_to cat, items_path(:cat => cat, :layout => "grouped" ) %></a>
+<% end %>
+
+
+<% n = @live_categories_user.length %>
+<% @new_category_array[n..6].each do |cat| %>
+       <a class="btn btn-default btn-block"
+          <%= link_to cat, new_categorytable_path %></a>
+<% end %>
+</div>
+
+
+
+  <div class = "col-md-9" style="font-size:19px;">
+
+
+
+
+
+
+<% if @layout == "expandgroup" %>
+    <div class="span3">
+<table class="table table-hover">
+  <colgroup>
+            <col class="col-md-1">
+            <col class="col-md-8">
+            <col class="col-md-2.0">
+            <col class="col-md-1">
+        </colgroup>
+
+
+  <tbody>
+    <% @expandgrouptop.each do |i| %>
+<tr>
+<td><%= link_to items_path(:cat => params[:cat], :layout => "grouped" ), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-folder-close"></i></td>
+
+        <td><%= link_to i.item  , edit_item_path(:id => i, :form => "category" ) %></td>
+        <td><%= number_to_currency(i.value, :unit => "$") %></td>
+        <td><%= link_to edit_item_path(:id => i, :form => "status" ), class: "btn btn-default" do %><i class="glyphicon glyphicon-ok"></i>   </td>
+
+<% end %>
+    <% end %>
+  <% end %>
+<tr>
+   <colgroup>
+            <col class="col-md-1">
+            <col class="col-md-8">
+            <col class="col-md-2.0">
+            <col class="col-md-1">
+        </colgroup>
+
+    <% @expandgroupbottom.each do |it,tot| %>
+  <% n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %>
+     <% if n > 1 %>
+
+        <td><%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %><i class="glyphicon glyphicon-folder-open"></i></td>
+
+
+        <% end %>
+        <td><%= link_to it ,edit_category_path(:cat => params[:cat], :item => it) %></td>
+        <td><%= number_to_currency(tot,:unit => "$") %></td>
+
+     <% end %>
+
+        <td><%= link_to edit_item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-ok"></i></td>
+
+        <%end%>
+</tr>
+       <% end %>
+  </tbody>
+</table>
+
+<% elsif @layout == "grouped" %>
+
+<div class="span3">
+<table class="table table-hover">
+  <colgroup>
+            <col class="col-md-1">
+            <col class="col-md-8">
+            <col class="col-md-2.0">
+            <col class="col-md-1">
+        </colgroup>
+
+  <tbody>
+   <% @grouped.each do |it,tot| %>
+      <tr>
+        <% n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %>
+        <% if n > 1 %>
+
+        <td><%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-folder-open"></i></td>
+
+       <% end %>
+        <% end %>
+        <td><%= link_to it ,edit_category_path(:cat => params[:cat], :item => it) %></td>
+        <td><%= number_to_currency(tot,:unit => "$") %></td>
+
+
+        <td><%= link_to edit_item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-ok"></i></td>
+
+        <%end%>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<% elsif @layout == "itemised" %>
+<div class="span3">
+<table class="table table-hover">
+   <colgroup>
+            <col class="col-md-7.5">
+            <col class="col-md-2.0">
+            <col class="col-md-1.5">
+        </colgroup>
+
+
+  <tbody>
+    <% @itemised.each do |it| %>
+      <tr>
+        <td><%= link_to it.item  , edit_item_path(:id => it, :form => "category" ) %></td>
+        <td><%= number_to_currency(it.value, :unit => "$") %></td>
+        <td><%= link_to item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-zoom-in"></i>
+          <%= link_to edit_item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-ok"></i>   </td>
+</tr>
+
+
+    <% end %>
+    <% end %>
+    <% end %>
+
+  </tbody>
+</table>
+<% end %>
+<br>
+
+</div>
+  </div>
+
+  </div>
+
+
+</div>
+  </div>
+
+  </div>
+<%=  @total_of_live_categories == @total_from_db  %>
+
+<% end %>
+<% end %>
+
+
+<h2>Category Totals</h2>
+<% @cattotals.each do |cat,tot| %>
+<td> <%= cat %>  <%=  tot  %> </td>
+<% end %>
+
+
+
+<%=  @total_of_live_categories %>
+

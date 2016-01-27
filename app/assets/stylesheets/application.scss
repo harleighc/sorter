@@ -1,0 +1,67 @@
+// "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+body {
+ // some css for homepage elements
+ background-color: white
+   ;
+}
+
+
+
+.span3 {
+    height: 600px !important;
+    overflow: scroll;
+}
+
+.table th, .table td {
+     border-top: none !important;
+}
+
+.btn:focus {
+  background-color: #DC381F;
+}
+
+.button {
+  background-color: #08c;
+  border-color: #08c;
+  border:4px solid white; border-radius:2px;
+}
+
+$buttonheight: 75px;
+body{background-color:white; font-family:Tahoma, Geneva, sans-serif;}
+
+.button{width:75px; height:$buttonheight; text-align:left; margin-bottom:2px; border:4px solid white; border-radius:2px; color:white; font-size:12px;
+    a{color:white; text-decoration:none; line-height:$buttonheight; width:100%; height:100%;  display:block;}
+  overflow:hidden; position:relative;
+  .first, .second{width:75px; display:inline-block; float:left;}
+}
+.eleven{
+  @extend .button;
+  transition:all 0.5s;
+}
+
+.eleven{
+   @extend .style3;
+ }
+
+.style3{
+  background-size:75px 75px;
+  .second{
+  a{
+    color:#3BB878;
+    letter-spacing:2px;
+  }}
+  .elong{transition:all 0.5s;position:relative;}
+}
+
+.eleven{
+  .elong{width:150px; left:-75px;}
+  .secondary{color:white;}
+}
+
+.eleven:hover, .eleven:focus{border:4px solid #3BB878;}
+
+.eleven:hover .elong, .eleven:focus .elong{left:0px;}
+
