@@ -60,7 +60,7 @@ x.each do |row|
 		row << 3
 		row << 0.1304
 		row << 1
-    row << 11
+  row << 88
 end
 
 csv = []

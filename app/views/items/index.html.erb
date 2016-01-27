@@ -11,7 +11,7 @@
 <div class = "row">
   <div class = "col-md-3"  >
 
-    <% @live_categories_system[0..5].each do |cat| %>
+   <% @live_categories_system[0..5].each do |cat| %>
     <button type="button" class="btn btn-default btn-block" >
       <% text = cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") %>
           <%= link_to text , items_path(:cat => cat, :layout => "grouped" ) %>
@@ -36,7 +36,10 @@
 
 
 
-<div class = "col-md-9" style="font-size:19px;">
+<div class = "col-md-9" >
+  <div class="page-header">
+  <h1> <%= params[:cat] %></h1>
+</div>
    <div class="span3">
       <table class="table table-hover">
         <colgroup>

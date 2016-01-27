@@ -25,9 +25,12 @@ require 'byebug'
   end
 
     def update_category
+old_items_mult = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
+     updated_items_mult = old_items_mult.update_all(:multiplier => params[:newmult].try(:strip))
+     old_items_cat = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
+     updated_items_cat = old_items_cat.update_all(:category => params[:newcat].try(:strip))
 
-     old_items = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
-     updated_items = old_items.update_all(:category => params[:newcat].try(:strip))
+
      redirect_to root_path
   end
 
@@ -168,7 +171,7 @@ require 'byebug'
 
    def import
 
-
+    @current_user = current_user.id
      Item.import(params[:file])
      redirect_to items_path, notice: "Companies Added Succesfully"
 

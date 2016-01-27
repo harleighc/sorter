@@ -7,6 +7,9 @@ body {
  background-color: white
    ;
 }
+
+
+
 .span3 {
     height: 600px !important;
     overflow: scroll;
@@ -14,8 +17,10 @@ body {
 
 .table th, .table td {
      border-top: none !important;
+}
 
-
+.btn:focus {
+  background-color: #DC381F;
 }
 
 .button {
