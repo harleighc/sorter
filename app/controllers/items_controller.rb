@@ -10,7 +10,8 @@ require 'byebug'
 
 
 
-
+  def edit_confirms
+  end
 
 
   def edit_category
@@ -30,6 +31,12 @@ require 'byebug'
      redirect_to root_path
   end
 
+    def update_confirms
+
+     old_items = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
+     updated_items = old_items.update_all(:status => params[:newstatus].try(:strip))
+     redirect_to root_path
+  end
 
 #   def update_category
 #      puts "params: #{params.inspect}"

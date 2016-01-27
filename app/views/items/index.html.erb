@@ -124,7 +124,7 @@
         <td><%= number_to_currency(tot,:unit => "$") %></td>
 
 
-        <td><%= link_to edit_item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
+        <td><%= link_to edit_confirms_path(:cat => params[:cat], :item => it), class: "btn btn-default" do %>
     <i class="glyphicon glyphicon-ok"></i></td>
 
         <%end%>

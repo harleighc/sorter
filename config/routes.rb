@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :categorytables
-  
+
   resources :csv
 
 
@@ -10,13 +10,14 @@ Rails.application.routes.draw do
   match 'items/test' => 'items#test', :via => [:get, :post]
 
   get 'edit_category' => 'items#edit_category'
+  get 'edit_confirms' => 'items#edit_confirms'
 
  root to: 'items#index'
  resources :items do
 
 
   match :update_category, via: [:get, :post], on: :collection  #-> url.com/items/update_category
-
+  match :update_confirms, via: [:get, :post], on: :collection
 
 collection {post :import}
 
