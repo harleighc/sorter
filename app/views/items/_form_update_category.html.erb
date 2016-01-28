@@ -1,12 +1,14 @@
 <%= form_tag("/items/update_category") do  %>
 
 
-<%= select_tag(:newcat, options_for_select(@array_of_live_categories.map { |value| [value] }), { include_blank: false }) %>
-<%= select_tag(:newmult, options_for_select([[1, 1],[0.95, 0.95],[0.5,0.5]])) %>
+<%= select_tag(:newcat, options_for_select(@array_of_live_categories.map { |value| [value] }, selected: params[:cat]), { include_blank: false }) %>
+<%= select_tag(:newmult, options_for_select(@array_of_multipliers.map { |desc,mult| [desc , mult] }), { include_blank: false }) %>
 <%= hidden_field_tag :item , params[:item]%>
 <%= hidden_field_tag :cat , params[:cat]%>
 <%= submit_tag %>
 <% end %>
+
+
 
 
 

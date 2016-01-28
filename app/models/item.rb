@@ -1,74 +1,75 @@
 class Item < ActiveRecord::Base
-before_save :update_status
-before_save :update_status2
-#validates_presence_of :category
 
 
 def self.import(file)
 x = CSV.read(file.path)
 
-x = x.drop(7)
-
-
 x.each do |row|
- case row[2]
-  when "A/P"
-    row[1] = row[4]
-    row[2] = "regular payment"
-  when "D/D"
-    row[1] = row[4]
-    row[2] = "regular payment"
-  when "BANK FEE"
-    row[1] = row[4]
-    row[2] = "bank fees"
-  when "INT"
-    row[1] = row[4]
-    row[2] = "interest"
-  when "WD"
-    row[1] = row[4]
-    row[2] = "bank fees"
-  when "EFTPOS"
-    row[1] = row[4]
-    row[2] = "unsorted"
-  when "ATM"
-    row[1] = row[4]
-    row[2] = "cash out"
-  when "DEBIT"
-    row[1] = row[5]
-    row[2] = "unsorted"
-  when "TFR IN"
-    row[1] = row[5]
-    row[2] = "transfer"
-  when "D/C"
-    row[1] = row[5]
-    row[2] = "income"
-  when "CREDIT"
-    row[1] = row[5]
-    row[2] = "income"
-  when "TRF OUT"
-    row[1] = row[5]
-    row[2] = "transfer"
-  else
-    row[1] = row[5]
-    row[2] = "unsorted"
+ case row[0]
+  when "Eft-Pos"
+   row[0] = "unsorted"
+when "Atm Debit"
+   row[0] = "cash out"
+when "Automatic Payment"
+   row[0] = "regular payment"
+when "Other Bank ATM Fee"
+   row[1] = "other bank atm fee"
+   row[0] = "bank fees"
+when "Direct Debit"
+   row[0] = "regular payment"
+when "Debit Transfer"
+   row[1] = "debit transfer"
+   row[0] = "transfer"
+when "Direct Credit"
+   row[0] = "income"
+when "Payment"
+   row[0] = "unsorted"
+when "Bill Payment"
+   row[0] = "income"
+when "Credit Transfer"
+   row[0] = "transfer"
+when "Eft-Pos Credit"
+   row[0] = "unsorted"
+when "Bank Fee"
+   row[0] = "bank fees"
+when "Debit Interest"
+   row[1] = "debit interest"
+   row[0] = "interest"
+when "Overseas ATM Fee"
+   row[1] = "overseas atm fee"
+   row[0] = "bank fees"
+when "One-Off Payment"
+   row[0] = "unsorted"
+when "Unpaid Item"
+   row[0] = "unsorted"
+when "Deposit"
+   row[0] = "income"
+ else
+   row[0] = "unsorted"
+    end
+  end
 
-
-  	end
+  x.each do |row|
+    case row[1]
+      when nil
+      row[1] = "no information provided"
+    end
   end
 
 x.each do |row|
-		row << 3
-		row << 0.1304
-		row << 1
-  row << 88
+  row.unshift(88)
+  row.unshift(1)
+  row.unshift(0.1304)
+    row.unshift(3)
+
+
 end
 
+
 csv = []
-
-
-ord = [1,6,2,7,8,9,0,10]
+ord = [5,9,4,0,1,2,10,3]
 x.each do |row|
-	 csv << row.values_at(*ord)
+   csv << row.values_at(*ord)
 
 
 
@@ -84,13 +85,7 @@ end
  private
 
 ## updates the status to indicate this is a category chosen by user - at present if you
-## import 2 csv's this is consided an update and all status's changed. Should also change back ## if added to the unsorted category.
+## import 2 csv's this is consided an update and all status's changed. Should also change back ## if added to the unsorted cat.
 
-  def update_status
-    self.status = 0 if category_changed?
-  end
-  def update_status2
-    self.status = 4 if category == "UNSORTED PURCHASE"
-  end
 
 end

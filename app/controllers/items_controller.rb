@@ -1,5 +1,7 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :save_my_previous_url, only: [:index]
+
 
 
   def test
@@ -17,6 +19,7 @@ class ItemsController < ApplicationController
   def edit_category
      #@live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
     @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+    @array_of_multipliers = [["100%",1],["95%", 0.95],["90%",0.9],["85%", 0.85],["80%",0.8],["75%", 0.75],["70%",0.7],["65%", 0.65],["60%",0.6],["55%", 0.55],["50%",0.5],["45%", 0.45],["40%",0.4],["35%", 0.35],["30%",0.3],["25%", 0.25],["20%",0.2],["15%", 0.15],["10%",0.1],["5%", 0.05]]
 
   end
 
@@ -25,20 +28,19 @@ class ItemsController < ApplicationController
   end
 
     def update_category
-old_items_mult = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
+      old_items_status = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
+      updated_items_status = old_items_status.update_all(:status => 0)
+     old_items_mult = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
      updated_items_mult = old_items_mult.update_all(:multiplier => params[:newmult].try(:strip))
      old_items_cat = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
      updated_items_cat = old_items_cat.update_all(:category => params[:newcat].try(:strip))
-
-
-     redirect_to root_path
+     redirect_to session[:my_previous_url]
   end
 
     def update_confirms
-
      old_items = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
      updated_items = old_items.update_all(:status => params[:newstatus].try(:strip))
-     redirect_to root_path
+     redirect_to session[:my_previous_url]
   end
 
 #   def update_category
@@ -77,18 +79,21 @@ old_items_mult = Item.where(:category => params[:cat].strip).where(:item => para
     #@distinct = Item.uniq.pluck(:category)
     @layout = params[:layout]
     @cattotals = Item.group(:category).sum('value * gst * multiplier')
+    @gsttotal = Item.sum('value * gst * multiplier')
     @itemised = Item.where("category = ?", params[:cat]).order(:value)
 
-    @grouped = Item.where("category = ?", params[:cat]).group(:item).sum(:value)
-    @grouped = @grouped.sort_by {|x,y|y}
 
+    #@grouped = Item.where("category = ?", params[:cat]).group(:item).sum(:value)
+    @grouped = Item.where("category = ?", params[:cat]).group(:item).pluck('item,sum(value),max(status)')
+    @grouped = @grouped.sort_by {|x,y,z|[-z,y,x]}
     ##console @grouped  Item.where('category = "BANK FEES"').group(:item).sum(:value)
     @expandgrouptop = Item.where("category = ?", params[:cat]).where("item = ?", params[:item]).order(:value)
     # console @expandgrouptop Item.select('item, value').where('category = "BANK FEES"').where('item = "a"').order('value desc') -tested
-    @expandgroupbottom = Item.select('item, sum(value)').where("category = ?", params[:cat]).where("item != ?", params[:item]).group(:item).sum(:value)
-    @expandgroupbottom = @expandgroupbottom.sort_by {|x,y|y}
+   # @expandgroupbottom = Item.select('item, sum(value),max(status)').where("category = ?", params[:cat]).where("item != ?", params[:item]).group(:item).sum(:value)
+   # @expandgroupbottom = @expandgroupbottom.sort_by {|x,y,z|[z,y,x]}
+    @expandgroupbottom = Item.where("category = ?", params[:cat]).where("item != ?", params[:item]).group(:item).pluck('item,sum(value),max(status)')
+    @expandgroupbottom = @expandgroupbottom.sort_by {|x,y,z|[-z,y,x]}
     #consonle @expandgroupbottom Item.select('item, sum(value) as val').where('category = "BANK FEES"').where('item != "a"').group(:item).sum(:value)
-
 
 
   end
@@ -107,11 +112,14 @@ old_items_mult = Item.where(:category => params[:cat].strip).where(:item => para
 
   # GET /items/1/edit
   def edit
-     @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name)
+    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name)
+    @array_of_multipliers = [["100%",1],["95%", 0.95],["90%",0.9],["85%", 0.85],["80%",0.8],["75%", 0.75],["70%",0.7],["65%", 0.65],["60%",0.6],["55%", 0.55],["50%",0.5],["45%", 0.45],["40%",0.4],["35%", 0.35],["30%",0.3],["25%", 0.25],["20%",0.2],["15%", 0.15],["10%",0.1],["5%", 0.05]]
    # @distinct = Item.uniq.pluck(:category)
     #@multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
     @form = params[:form]
-    @back_url =  session[:my_previous_url]
+   
+
+
 
 
 
@@ -130,7 +138,7 @@ old_items_mult = Item.where(:category => params[:cat].strip).where(:item => para
     respond_to do |format|
 
       if @item.save
-        format.html { redirect_to @item, notice: 'Item was successfully created.' }
+        format.html { redirect_to root_path, notice: 'Item was successfully created.' }
         format.json {render :show, status: :created, location: @item }
 
       else
@@ -148,7 +156,7 @@ old_items_mult = Item.where(:category => params[:cat].strip).where(:item => para
 
     respond_to do |format|
       if @item.update(item_params)
-        format.html { redirect_to @item, notice: 'Item was successfully updated.' }
+        format.html { redirect_to session[:my_previous_url], notice: 'Item was successfully updated.' }
         format.json {  render :show, status: :ok, location: @item }
       else
         format.html { render :edit }
@@ -190,6 +198,10 @@ def item_params
      params.require(:item).permit(:item, :value, :category, :status, :gst, :multiplier, :date, :identifier, :newcat)
 end
 
+def save_my_previous_url
+    # session[:previous_url] is a Rails built-in variable to save last url.
+    session[:my_previous_url] = request.original_url
+  end
 
 
 end

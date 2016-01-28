@@ -6,6 +6,11 @@
 
 <% if user_signed_in? %>
 
+<div class = "col-md-12" >
+  <div class="page-header">
+  <h1> <%= params[:cat] %></h1>
+</div>
+
 <div class = container-fluid>
 
 <div class = "row">
@@ -36,41 +41,50 @@
 
 
 
-<div class = "col-md-9" >
-  <div class="page-header">
-  <h1> <%= params[:cat] %></h1>
-</div>
+
+ <div class = "col-md-9" >
    <div class="span3">
       <table class="table table-hover">
         <colgroup>
                   <col class="col-md-1">
-                  <col class="col-md-8">
+                  <col class="col-md-1">
+                  <col class="col-md-7">
                   <col class="col-md-2.0">
                   <col class="col-md-1">
 
 <% if @layout == "expandgroup" %>
 <tbody>
+  <% counter = 0 %>
     <% @expandgrouptop.each do |i| %>
 <tr>
-    <td><%= link_to items_path(:cat => params[:cat], :layout => "grouped" ), class: "btn btn-default" do %>
-    <i class="glyphicon glyphicon-folder-close"></i></td>
+  <td><%= link_to "show" , item_path(:cat => params[:cat], :id => i[:id]) %></td>
+    <td><% if counter == 0 %>
+    <%= link_to items_path(:cat => params[:cat], :layout => "grouped" ), class: "btn btn-default" do %>
+    <i class="glyphicon glyphicon-chevron-down"></i>
+        <% end %>
+      <% counter += 1 %>
+      <% else %>
+   <%= nil  %>
+  <% end %></td>
+
     <td><%= link_to i.item  , edit_item_path(:id => i, :form => "category" ) %></td>
     <td><%= number_to_currency(i.value, :unit => "$") %></td>
     <td><%= link_to edit_item_path(:id => i, :form => "status" ), class: "btn btn-default" do %><i class="glyphicon glyphicon-ok"></i></td>
-       <% end %>
+
     <% end %>
   <% end %>
 <tr>
 
 
-    <% @expandgroupbottom.each do |it,tot| %>
+    <% @expandgroupbottom.each do |it,tot,maxstatus| %>
 <tr>
+  <td><%= maxstatus %></td>
     <td><% n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %>
       <% case n %>
         <% when 1 %>
           <%= nil %>
         <% else %>
-          <%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %><i class="glyphicon glyphicon-folder-open"></i></td>
+          <%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %><i class="glyphicon glyphicon-th"></i></td>
         <% end %>
        <% end %>
      <td><%= link_to it ,edit_category_path(:cat => params[:cat], :item => it) %></td>
@@ -86,14 +100,15 @@
 
 <% elsif @layout == "grouped" %>
  <tbody>
-   <% @grouped.each do |it,tot| %>
+   <% @grouped.each do |it,tot,maxstatus| %>
       <tr>
+        <td><%= maxstatus %></td>
       <td><% n = Item.where(:item => it).where(:category => params[:cat]).count(:item) %>
         <% case n %>
         <% when 1 %>
         <%= nil %>
         <% else %>
-       <%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %><i class="glyphicon glyphicon-folder-open"></i></td>
+       <%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %><i class="glyphicon glyphicon-th"></i></td>
 
         <% end %>
         <% end %>
@@ -138,13 +153,15 @@
 <% end %>
 <% end %>
 
-
+ <%= number_to_currency(@gsttotal ,:unit => "$") %>
 <%=  @total_of_live_categories == @total_from_db  %>
 
 <h2>GST Totals</h2>
 <% @cattotals.each do |cat,tot| %>
-<td> <%= cat %>  <%=  tot  %> </td>
+<td> <%= cat %>  <%= number_to_currency(tot,:unit => "$")   %> </td>
 <% end %>
+
+
 
 
 
