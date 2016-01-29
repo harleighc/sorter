@@ -8,6 +8,8 @@ class ItemsController < ApplicationController
   end
 
  def edit_gst
+   @array_of_multipliers = [["100%",1],["95%", 0.95],["90%",0.9],["85%", 0.85],["80%",0.8],["75%", 0.75],["70%",0.7],["65%", 0.65],["60%",0.6],["55%", 0.55],["50%",0.5],["45%", 0.45],["40%",0.4],["35%", 0.35],["30%",0.3],["25%", 0.25],["20%",0.2],["15%", 0.15],["10%",0.1],["05%", 0.05],["00%",0.0]]
+
   end
 
   def edit_confirms
@@ -27,13 +29,15 @@ class ItemsController < ApplicationController
 
   def update_gst
     old_items_gst = Item.where(:category => params[:cat])
-    updated_items_gst = old_items_gst.update_all(:gst => 0)
+    updated_items_gst = old_items_gst.update_all(:multiplier => params[:newmult])
+    old_items_status = Item.where(:category => params[:cat])
+    updated_items_gst = old_items_status.update_all(:status => params[:newstatus])
     redirect_to session[:my_previous_url]
   end
 
     def update_category
-      old_items_status = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
-      updated_items_status = old_items_status.update_all(:status => 0)
+     old_items_status = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
+     updated_items_status = old_items_status.update_all(:status => 0)
      old_items_mult = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
      updated_items_mult = old_items_mult.update_all(:multiplier => params[:newmult].try(:strip))
      old_items_cat = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)

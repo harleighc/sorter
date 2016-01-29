@@ -1,6 +1,7 @@
 <%= form_tag("/items/update_gst") do  %>
 
-
+<%= select_tag(:newmult, options_for_select(@array_of_multipliers.map { |desc,mult| [desc , mult] }), { include_blank: false }) %>
+<%= select_tag(:newstatus, options_for_select([['CONFIRMED', 0],['UNCONFIRMED',4]])) %>
 <%= hidden_field_tag :cat , params[:cat]%>
 <%= submit_tag %>
 <% end %>
