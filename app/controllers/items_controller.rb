@@ -5,12 +5,10 @@ class ItemsController < ApplicationController
 
 
   def test
-
-
-
   end
 
-
+ def edit_gst
+  end
 
   def edit_confirms
   end
@@ -25,6 +23,12 @@ class ItemsController < ApplicationController
 
   def update_list
 
+  end
+
+  def update_gst
+    old_items_gst = Item.where(:category => params[:cat])
+    updated_items_gst = old_items_gst.update_all(:gst => 0)
+    redirect_to session[:my_previous_url]
   end
 
     def update_category
@@ -117,7 +121,7 @@ class ItemsController < ApplicationController
    # @distinct = Item.uniq.pluck(:category)
     #@multi_update = Item.where('category == "INCOME"').update_all('multiplier == 50')
     @form = params[:form]
-   
+
 
 
 
