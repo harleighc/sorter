@@ -17,25 +17,26 @@
   <div class = "col-md-3"  >
 
    <% @live_categories_system[0..5].each do |cat| %>
-    <button type="button" class="btn btn-default btn-block" >
       <% text = cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") %>
-          <%= link_to text , items_path(:cat => cat, :layout => "grouped" ) %>
-            <% end %></button>
+          <%= link_to text, items_path(:cat => cat, :layout => "grouped") , :class => "btn btn-default btn-block" %>
+            <% end %>
+
+
+
 
     <% @live_categories_system[6..11].each do |cat| %>
-      <button type="button" class="btn btn-default btn-block" >
        <% text = cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") %>
-          <%= link_to text, items_path(:cat => cat, :layout => "grouped" ) %>
-            <% end %></button>
+          <%= link_to text, items_path(:cat => cat, :layout => "grouped") , :class => "btn btn-default btn-block" %>
+            <% end %>
 
    <% @live_categories_user.each do |cat| %>
-        <button type="button" class="btn btn-default btn-block" >
-          <%= link_to cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$"), items_path(:cat => cat, :layout => "grouped" ) %>
-            <% end %></button>
+
+          <%= link_to cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$"), items_path(:cat => cat, :layout => "grouped" ),:class => "btn btn-default btn-block" %>
+            <% end %>
 
     <% n = @live_categories_user.length %>
-          <button type="button" class="btn btn-default btn-block" >
-      <%= link_to "new" , new_categorytable_path %></button>
+
+      <%= link_to "new" , new_categorytable_path , :class => "btn btn-default btn-block" %>
 
 </div>
 
@@ -67,7 +68,7 @@
    <%= nil  %>
   <% end %></td>
 
-    <td><%= link_to i.item  , edit_item_path(:id => i, :form => "category" ) %></td>
+    <td><%= link_to i.item  , edit_item_path(:id => i, :form => "category" ),class: "btn btn-default" %></td>
     <td><%= number_to_currency(i.value, :unit => "$") %></td>
     <td><%= link_to edit_item_path(:id => i, :form => "status" ), class: "btn btn-default" do %><i class="glyphicon glyphicon-ok"></i></td>
 
@@ -87,7 +88,7 @@
           <%= link_to items_path(:cat => params[:cat], :layout => "expandgroup", :item => it ), class: "btn btn-default" do %><i class="glyphicon glyphicon-th"></i></td>
         <% end %>
        <% end %>
-     <td><%= link_to it ,edit_category_path(:cat => params[:cat], :item => it) %></td>
+     <td><%= link_to it ,edit_category_path(:cat => params[:cat], :item => it),class: "btn btn-default" %></td>
      <td><%= number_to_currency(tot,:unit => "$") %></td>
      <td><%= link_to edit_confirms_path(:cat => params[:cat], :item => it), class: "btn btn-default" do %>
     <i class="glyphicon glyphicon-ok"></i></td>
@@ -112,7 +113,7 @@
 
         <% end %>
         <% end %>
-        <td><%= link_to it ,edit_category_path(:cat => params[:cat], :item => it) %></td>
+        <td><%= link_to it ,edit_category_path(:cat => params[:cat], :item => it),class: "btn btn-default" %></td>
         <td><%= number_to_currency(tot,:unit => "$") %></td>
 
         <td><%= link_to edit_confirms_path(:cat => params[:cat], :item => it), class: "btn btn-default" do %>
