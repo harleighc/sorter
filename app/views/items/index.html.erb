@@ -1,7 +1,8 @@
 <div class = container-fluid>
-<button type="button" class="btn btn-default navbar-btn">
+
 <% if current_user %>
-  <%= link_to "Sign Out", destroy_user_session_path, method: :delete %></button>
+  <%= link_to "Sign Out", destroy_user_session_path, :class => "btn btn-default navbar-btn", method: :delete %>
+  <% end %>
 </div>
 
 <% if user_signed_in? %>
@@ -151,10 +152,10 @@
 </div>
 </div>
 
-<% end %>
-<% end %>
 
- <%= number_to_currency(@gsttotal ,:unit => "$") %>
+
+
+<%= number_to_currency(@gsttotal ,:unit => "$") %>
 <%=  @total_of_live_categories == @total_from_db  %>
 
 <h2>GST Totals</h2>
@@ -162,7 +163,7 @@
 <td> <%= cat %>  <%= number_to_currency(tot,:unit => "$")   %> </td>
 <% end %>
 
-
+<% end %>
 
 
 
