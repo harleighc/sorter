@@ -24,7 +24,7 @@ class CategorytablesController < ApplicationController
   def new
     @categorytable = Categorytable.new
     @live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
-   
+
   end
 
   # GET /categorytables/1/edit
@@ -44,7 +44,7 @@ class CategorytablesController < ApplicationController
 
     respond_to do |format|
       if @categorytable.save
-        format.html { redirect_to @categorytable, notice: 'Categorytable was successfully created.' }
+        format.html { redirect_to session[:my_previous_url], notice: 'Categorytable was successfully created.' }
         format.json { render :show, status: :created, location: @categorytable }
       else
         format.html { render :new }

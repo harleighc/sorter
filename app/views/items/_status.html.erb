@@ -1,3 +1,4 @@
+<h2>Confirm Item</h2>
 
 <%= form_for(@item) do |f| %>
   <% if @item.errors.any? %>
@@ -23,9 +24,8 @@
 
   <div class="actions">
     <%= f.submit %>
-    
+
 
   </div>
 <% end %>
 
-<%= params.inspect %>

@@ -8,7 +8,7 @@
 
 <div class = "col-md-12" >
   <div class="page-header">
-    <h1> <%= params[:cat] %></h1><%= link_to "edit " + params[:cat]  ,edit_gst_path(:cat => params[:cat]) if params[:cat] != nil %>
+    <h1> <%= params[:cat] %></h1><%= link_to "edit category"  ,edit_gst_path(:cat => params[:cat]), class: "btn btn-default " if params[:cat] != nil %>
 </div>
 
 <div class = container-fluid>
@@ -68,7 +68,7 @@
    <%= nil  %>
   <% end %></td>
 
-    <td><%= link_to i.item  , edit_item_path(:id => i, :form => "category" ),class: "btn btn-default" %></td>
+    <td><%= link_to i.item  , edit_item_path(:id => i, :form => "category" ),class: "btn btn-default " %></td>
     <td><%= number_to_currency(i.value, :unit => "$") %></td>
     <td><%= link_to edit_item_path(:id => i, :form => "status" ), class: "btn btn-default" do %><i class="glyphicon glyphicon-ok"></i></td>
 
