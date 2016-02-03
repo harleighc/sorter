@@ -4,7 +4,25 @@ class ItemsController < ApplicationController
 
 
 
+
+  def expand
+  @expandgrouptop = Item.where("category = ?", params[:cat]).where("item = ?", params[:item]).order(:value)
+  end
+
+
   def test
+
+    @id = Item.where(:category => params[:cat]).where(:item => params[:item]).pluck(:id)
+    @m = (params[:id].to_i) + 1
+    @b = (params[:id].to_i) - 40
+    @i = params[:id].to_i
+    @t = (params[:id].to_i) + 40
+    @contextbot = Item.where(:id => @b...@i ).where('category != "transfer"')
+    @contexttop = Item.where(:id => @m...@t ).where('category != "transfer"')
+    @contextmid = Item.where(:id => @i ).where('category != "transfer"')
+
+
+#@context = Item.where(:id => @b..@t).where('category != "transfer"')
   end
 
  def edit_gst
@@ -12,10 +30,24 @@ class ItemsController < ApplicationController
 
   end
 
+
+
   def edit_confirms
   end
 
+  def edit_checks_mult
+     #@live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+    @array_of_multipliers = [["100%",1],["95%", 0.95],["90%",0.9],["85%", 0.85],["80%",0.8],["75%", 0.75],["70%",0.7],["65%", 0.65],["60%",0.6],["55%", 0.55],["50%",0.5],["45%", 0.45],["40%",0.4],["35%", 0.35],["30%",0.3],["25%", 0.25],["20%",0.2],["15%", 0.15],["10%",0.1],["05%", 0.05],["00%",0.0]]
 
+  end
+
+  def edit_checks_ind
+     #@live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+    @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
+    @array_of_multipliers = [["100%",1],["95%", 0.95],["90%",0.9],["85%", 0.85],["80%",0.8],["75%", 0.75],["70%",0.7],["65%", 0.65],["60%",0.6],["55%", 0.55],["50%",0.5],["45%", 0.45],["40%",0.4],["35%", 0.35],["30%",0.3],["25%", 0.25],["20%",0.2],["15%", 0.15],["10%",0.1],["05%", 0.05],["00%",0.0]]
+
+  end
   def edit_category
      #@live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
     @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
@@ -27,6 +59,10 @@ class ItemsController < ApplicationController
 
   end
 
+
+
+
+
   def update_gst
     old_items_gst = Item.where(:category => params[:cat])
     updated_items_gst = old_items_gst.update_all(:multiplier => params[:newmult])
@@ -35,7 +71,34 @@ class ItemsController < ApplicationController
     redirect_to session[:my_previous_url]
   end
 
-    def update_category
+  def update_checks_ind
+    old_items_checks_ind = Item.where(:category => params[:cat]).where(:id => params[:checks_ind].split(','))
+    updated_items_checks_ind = old_items_checks_ind.update_all(:category => params[:newcat])
+  end
+
+  def update_checks_mult
+       puts "PARAMS: #{params.inspect}"
+       puts "params[:checks_mult]: #{params[:checks_mult].split(',').inspect}"
+       old_items_checks_mult = Item.where(:category => params[:cat]).where(:item => params[:checks_mult].split(','))
+       puts "old_items_checks_mult: #{old_items_checks_mult.inspect}"
+       updated_items_checks_mult = old_items_checks_mult.update_all(:category => params[:newcat])
+       puts "updated_items_checks_mult: #{updated_items_checks_mult.inspect}"
+       redirect_to session[:my_previous_url]
+  end
+
+  def update_checks_ind
+       puts "PARAMS: #{params.inspect}"
+    puts "params[:checks_ind]: #{params[:checks_ind].split(',').inspect}"
+    old_items_checks_ind = Item.where(:category => params[:cat]).where(:id => params[:checks_ind].split(','))
+    puts "old_items_checks_ind: #{old_items_checks_ind.inspect}"
+    updated_items_checks_ind = old_items_checks_ind.update_all(:category => params[:newcat])
+    puts "updated_items_checks_ind: #{updated_items_checks_ind.inspect}"
+       redirect_to session[:my_previous_url]
+  end
+
+  def update_category
+
+
      old_items_status = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
      updated_items_status = old_items_status.update_all(:status => 0)
      old_items_mult = Item.where(:category => params[:cat].strip).where(:item => params[:item].strip)
@@ -68,7 +131,7 @@ class ItemsController < ApplicationController
   def index
 
 
-
+    #Item.where(:category => "unsorted").where(:item => "Yuzu Japanese").pluck(:id)
     @runningtotalgst = Item.sum('value * gst * multiplier')
     @runningtotal = Item.sum(:value)
     @live_categories_system = Categorytable.where(:user_id => 0).pluck(:name) if current_user
@@ -80,7 +143,7 @@ class ItemsController < ApplicationController
     @array_of_live_categories = Categorytable.where(:user_id => [0,current_user.id]).pluck(:name) if current_user
     @total_of_live_categories = Item.where(:category => @array_of_live_categories).sum(:value)
     @total_from_db = Item.sum(:value) # needs an ID
-
+    @uniqcat = Item.pluck(:category).uniq
 
     @cat = params[:cat]
     #@live_categories_total = Item.where("category = live_categories[:name]").sum(:value)
@@ -88,14 +151,15 @@ class ItemsController < ApplicationController
     @layout = params[:layout]
     @cattotals = Item.group(:category).sum('value * gst * multiplier')
     @gsttotal = Item.sum('value * gst * multiplier')
-    @itemised = Item.where("category = ?", params[:cat]).order(:value)
+    #@itemised = Item.where("category = ?", params[:cat]).order(:value)
+    @itemised = Item.where("category = ?", params[:cat])
 
 
     #@grouped = Item.where("category = ?", params[:cat]).group(:item).sum(:value)
     @grouped = Item.where("category = ?", params[:cat]).group(:item).pluck('item,sum(value),max(status)')
     @grouped = @grouped.sort_by {|x,y,z|[-z,y,x]}
     ##console @grouped  Item.where('category = "BANK FEES"').group(:item).sum(:value)
-    @expandgrouptop = Item.where("category = ?", params[:cat]).where("item = ?", params[:item]).order(:value)
+
     # console @expandgrouptop Item.select('item, value').where('category = "BANK FEES"').where('item = "a"').order('value desc') -tested
    # @expandgroupbottom = Item.select('item, sum(value),max(status)').where("category = ?", params[:cat]).where("item != ?", params[:item]).group(:item).sum(:value)
    # @expandgroupbottom = @expandgroupbottom.sort_by {|x,y,z|[z,y,x]}
