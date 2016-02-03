@@ -150,9 +150,9 @@
         <td><%= it.item  %></td>
         <td><%= number_to_currency(it.value, :unit => "$") %></td>
         <td><%= link_to params[:cat], items_expand_path(:cat => params[:cat], :item => it.item),class: "btn btn-default" %></td>
-        <td><%= link_to item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
+        <td><% link_to item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
     <i class="glyphicon glyphicon-zoom-in"></i>
-          <%= link_to edit_item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
+          <% link_to edit_item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
     <i class="glyphicon glyphicon-ok"></i>   </td>
 
         <% end %>
@@ -218,10 +218,11 @@
         <td><%= it.date %> </td>
         <td><%= it.item  %></td>
         <td><%= number_to_currency(it.value, :unit => "$") %></td>
-        <td><%= link_to link_to "Categorise", edit_item_path(:id => it, :form => "category" ),class: "btn btn-default" %></td>
-        <td><%= link_to item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
+        <td></td>
+        <td><% link_to link_to "Categorise", edit_item_path(:id => it, :form => "category" ),class: "btn btn-default" %></td>
+        <td><% link_to item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
     <i class="glyphicon glyphicon-zoom-in"></i>
-          <%= link_to edit_item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
+          <% link_to edit_item_path(:id => it, :form => "status" ), class: "btn btn-default" do %>
     <i class="glyphicon glyphicon-ok"></i>   </td>
         <% end %>
         <% end %>
