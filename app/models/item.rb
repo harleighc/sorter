@@ -82,11 +82,15 @@ csv.each do |row|
 
 end
 
-
- private
-
-## updates the status to indicate this is a category chosen by user - at present if you
-## import 2 csv's this is consided an update and all status's changed. Should also change back ## if added to the unsorted cat.
-
+def self.to_csv
+  CSV.generate do |csv|
+    csv << column_names
+    all.each do |company|
+      csv << company.attributes.values_at(*column_names)
+    end
+  end
+end
 
 end
+
+

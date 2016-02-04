@@ -2,7 +2,19 @@
 <%= form_tag import_items_path, multipart: true do %>
 <%= file_field_tag :file %>
 <%= submit_tag "Import CSV", class: 'btn btn-default'%>
+
+
+
+
+<h3>Download File</h3>
+<%= link_to "Export CSV", items_path(format: "csv"), class: 'btn btn-default' %>
+<%= link_to 'back', root_path %>
+
+
 <% end %>
 
 
-<%= link_to "CSV already uploaded", items_path, :class => "btn btn-default navbar-btn" %>
+<%= link_to "Home", items_path, :class => "btn btn-default navbar-btn" %>
+
+
+

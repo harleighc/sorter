@@ -11,18 +11,16 @@ class ItemsController < ApplicationController
 
 
   def test
-
-    @id = Item.where(:category => params[:cat]).where(:item => params[:item]).pluck(:id)
-    @m = (params[:id].to_i) + 1
-    @b = (params[:id].to_i) - 40
-    @i = params[:id].to_i
-    @t = (params[:id].to_i) + 40
-    @contextbot = Item.where(:id => @b...@i ).where('category != "transfer"')
-    @contexttop = Item.where(:id => @m...@t ).where('category != "transfer"')
+    @m = (params[:id].to_i)
+    @mm = (params[:id].to_i) + 1
+    @b = (params[:id].to_i) - 30
+    @i = (params[:id].to_i)
+    @t = (params[:id].to_i) + 30
+    @contextbot = Item.where(:id => @b...@m ).where('category != "transfer"')
     @contextmid = Item.where(:id => @i ).where('category != "transfer"')
+    @contexttop = Item.where(:id => @mm...@t ).where('category != "transfer"')
 
 
-#@context = Item.where(:id => @b..@t).where('category != "transfer"')
   end
 
  def edit_gst
@@ -166,8 +164,11 @@ class ItemsController < ApplicationController
     @expandgroupbottom = Item.where("category = ?", params[:cat]).where("item != ?", params[:item]).group(:item).pluck('item,sum(value),max(status)')
     @expandgroupbottom = @expandgroupbottom.sort_by {|x,y,z|[-z,y,x]}
     #consonle @expandgroupbottom Item.select('item, sum(value) as val').where('category = "BANK FEES"').where('item != "a"').group(:item).sum(:value)
-
-
+      @it = Item.all
+    respond_to do |format|
+      format.html
+      format.csv {render text: @it.to_csv}
+    end
   end
   # GET /items/1
   # GET /items/1.json

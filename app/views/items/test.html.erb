@@ -3,55 +3,56 @@
 
 
 <% if user_signed_in? %>
-  
+
 <h1>Transaction: <%= params[:item] %><%= params[:date] %></h1>
 <h3> in context </h3>
 
 <div class = container-fluid>
+  <div class = "col-md-9" style="font-size:8px;">
+    <div class="span3">
+      <table class="table table-hover">
+        <colgroup>
 
-
-
-<div class = "col-md-4" style="font-size:8px;">
-  <div class="span3">
-<table class="table table-hover">
-  <colgroup>
             <col class="col-md-2">
             <col class="col-md-3">
-            <col class="col-md-2">
+            <col class="col-md-3">
             <col class="col-md-2">
         </colgroup>
 
-<tbody>
-  <% @contexttop.each do |it| %>
-<tr>
-   <td> <%= it.category %></td>
-   <td> <%= it.item %></td>
-   <td> <%= it.date %></td>
-   <td> <%= it.value %></td>
- <% end %>
+          <tbody>
+            <% @contextbot.each do |it| %>
+            <tr>
 
- </tr>
+              <td> <%= it.category %></td>
+              <td> <%= it.item %></td>
+              <td> <%= it.date %></td>
+              <td> <%= it.value %></td>
+               <% end %>
+           </tr>
+               <% @contextmid.each do |it| %>
+            <tr class="danger">
+
+              <td> <%= it.category%></td>
+              <td>  <%= it.item %></td>
+              <td>  <%= it.date%></td>
+              <td>  <%= it.value %></td>
+               <% end %>
+           </tr>
+
+   <% @contexttop.each do |it| %>
+            <tr>
+
+              <td> <%= it.category %></td>
+              <td> <%= it.item %></td>
+              <td> <%= it.date %></td>
+              <td> <%= it.value %></td>
+               <% end %>
+           </tr>
 
 
-<% @contextmid.each do |it| %>
-<tr>
-  <td class="danger" ><%= it.category %></td>
-   <td class="danger" ><%= it.item %></td>
-   <td class="danger" ><%= it.date %></td>
-  <td class="danger" ><%= it.value %></td>
- <% end %>
 
- </tr>
 
-<% @contextbot.each do |it| %>
-<tr>
-   <td> <%= it.category %></td>
-   <td> <%= it.item %></td>
-   <td> <%= it.date %></td>
-   <td> <%= it.value %></td>
- <% end %>
-
-  </tbody>
+          </tbody>
 </table>
 
  </div>
@@ -59,3 +60,6 @@
 </div>
 
  <% end %>
+
+
+  </div>
