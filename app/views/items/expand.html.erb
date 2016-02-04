@@ -4,47 +4,63 @@
 
 <% if user_signed_in? %>
 
+  <%= params[:n] %><%=  params[:item] %>
+
 <div class = container-fluid>
 <div class = "col-md-9" style="font-size:14px;">
-  <div class="span3">
+<div class="span3">
 
 <table class="table table-hover">
   <colgroup>
             <col class="col-md-1">
             <col class="col-md-1">
-            <col class="col-md-1">
+            <col class="col-md-5">
             <col class="col-md-2">
-    <col class="col-md-1">
-    <col class="col-md-1">
-        </colgroup>
-
+            <col class="col-md-1">
+            <col class="col-md-1">
+            <col class="col-md-1">
+<tbody>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tbody>
 <tbody>
   <%= form_tag edit_checks_ind_path, method: :get do %>
-<% counter = 0 %>
-   <%= hidden_field_tag :cat, params[:cat] %>
+    <% counter = 0 %>
+    <%= hidden_field_tag :cat, params[:cat] %>
     <%= hidden_field_tag :item, params[:item] %>
     <% @expandgrouptop.each do |i| %>
 <tr>
-       <td> <% if counter == 0 %>
-         <%=submit_tag "categorise selection"%>
-        <% counter += 1 %>
-        <% else %>
-        <%= nil  %>
-  <% end %></td>
-  <td><%= check_box_tag "checks_ind[]", i.id %></td>
-  <td><%= i.date %></td>
-  <td><%= i.item %></td>
-
-  <td><%= number_to_currency(i.value, :unit => "$") %></td>
-  <td><%= link_to items_test_path(:id => i.id, :cat => i.category),class: "btn btn-default" do %> <i class="glyphicon glyphicon-zoom-in"></i></td>
-  <% end %>
-
-  <td><% link_to "Categorise All" ,edit_category_path(:cat => params[:cat], :item => i.item),class: "btn btn-default" %></td>
-  <% end %>
-
-<tr>
-
+        <td><%= link_to items_test_path(:id => i.id, :cat => i.category),class: "btn btn-default" do %> <i class="glyphicon glyphicon-zoom-in"></i></td>
+        <td><%= i.date %></td>
+        <td><%= i.item %></td>
+        <td><%= number_to_currency(i.value, :unit => "$") %></td>
+        <td><%= check_box_tag "checks_ind[]", i.id %></td>
+         <td> <% if counter == 0 %>
+               <%=submit_tag "categorise selection"%>
+              <% counter += 1 %>
+              <% else %>
+              <%= nil  %>
+        <% end %></td>
+        <td> <% if counter == 1 %>
+               <%= link_to "Categorise All" ,edit_category_path(:cat => params[:cat], :item => i.item),class: "btn btn-default" %>
+              <% counter += 1 %>
+              <% else %>
+              <%= nil  %>
+        <% end %></td>
+        <% end %>
+</tr>
+</tbody>
+    <% end %>
+</colgroup>
+</table>
+  </div>
+  </div>
+  </div>
 
 <% end %>
-
 <% end %>

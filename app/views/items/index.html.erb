@@ -57,11 +57,17 @@
 <tbody>
     <% @itemised.each do |it| %>
       <tr>
+        <% n = Item.where(:item => it.item).where(:category => params[:cat]).count(:item) %>
+
         <td><%= it.date %> </td>
         <td><%= it.item  %></td>
         <td><%= number_to_currency(it.value, :unit => "$") %></td>
         <td></td>
-        <td><%= link_to params[:cat], items_expand_path(:cat => params[:cat], :item => it.item),class: "btn btn-default btn-sm" %></td>
+        <td><% if n == 1 %>
+          <td><%= link_to link_to params[:cat], edit_item_path(:id => it, :form => "category" ),class: "btn btn-default btn-sm" %></td>
+          <% else %>
+        <td><%= link_to params[:cat], items_expand_path(:cat => params[:cat], :item => it.item, :n => n),class: "btn btn-default btn-sm" %></td>
+<% end %>
         <% end %>
      </tr>
 </tbody>
