@@ -23,7 +23,7 @@
   <div class = "col-md-3" >
 
    <% @live_categories_system[0..5].each do |cat| %>
-      <% text = cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") %>
+      <% text = cat + " " + number_to_currency(Item.where(:identifier => current_user.id ).where("category = ?", cat).sum(:value),:unit => "$") %>
     <%= link_to text, items_path(:cat => cat, :layout => "itemised") , :class => "btn btn-default btn-block" %>
             <% end %>
 
@@ -31,13 +31,13 @@
 
 
     <% @live_categories_system[6..11].each do |cat| %>
-       <% text = cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$") %>
+       <% text = cat + " " + number_to_currency(Item.where(:identifier => current_user.id ).where("category = ?", cat).sum(:value),:unit => "$") %>
           <%= link_to text, items_path(:cat => cat, :layout => "itemised") , :class => "btn btn-default btn-block" %>
             <% end %>
 
    <% @live_categories_user.each do |cat| %>
 
-          <%= link_to cat + " " + number_to_currency(Item.where("category = ?", cat).sum(:value),:unit => "$"), items_path(:cat => cat, :layout => "itemised" ),:class => "btn btn-default btn-block" %>
+          <%= link_to cat + " " + number_to_currency(Item.where(:identifier => current_user.id ).where("category = ?", cat).sum(:value),:unit => "$"), items_path(:cat => cat, :layout => "itemised" ),:class => "btn btn-default btn-block" %>
             <% end %>
 
     <% n = @live_categories_user.length %>
@@ -57,16 +57,16 @@
 <tbody>
     <% @itemised.each do |it| %>
       <tr>
-        <% n = Item.where(:item => it.item).where(:category => params[:cat]).count(:item) %>
+        <% n = Item.where(:identifier => current_user.id ).where(:item => it.item).where(:category => params[:cat]).count(:item) %>
 
         <td><%= it.date %> </td>
         <td><%= it.item  %></td>
         <td><%= number_to_currency(it.value, :unit => "$") %></td>
         <td></td>
         <td><% if n == 1 %>
-          <td><%= link_to link_to params[:cat], edit_item_path(:id => it, :form => "category" ),class: "btn btn-default btn-sm" %></td>
+        <td><%= link_to params[:cat] + " (" + n.to_s + " items)", edit_item_path(:id => it, :form => "category" ),class: "btn btn-default btn-sm" %></td>
           <% else %>
-        <td><%= link_to params[:cat], items_expand_path(:cat => params[:cat], :item => it.item, :n => n),class: "btn btn-default btn-sm" %></td>
+        <td><%= link_to params[:cat] + " (" + n.to_s + " items)", items_expand_path(:cat => params[:cat], :item => it.item, :n => n),class: "btn btn-default btn-sm" %></td>
 <% end %>
         <% end %>
      </tr>
