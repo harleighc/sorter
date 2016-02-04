@@ -16,9 +16,9 @@ class ItemsController < ApplicationController
     @b = (params[:id].to_i) - 30
     @i = (params[:id].to_i)
     @t = (params[:id].to_i) + 30
-    @contextbot = Item.where(:id => @b...@m ).where('category != "transfer"')
-    @contextmid = Item.where(:id => @i ).where('category != "transfer"')
-    @contexttop = Item.where(:id => @mm...@t ).where('category != "transfer"')
+    @contextbot = Item.where(:id => @b...@m )
+    @contextmid = Item.where(:id => @i )
+    @contexttop = Item.where(:id => @mm...@t )
 
 
   end
