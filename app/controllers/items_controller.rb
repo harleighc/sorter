@@ -5,6 +5,7 @@ class ItemsController < ApplicationController
 
 
 
+
   def expand
   @expandgrouptop = Item.where(:identifier => current_user.id ).where("category = ?", params[:cat]).where("item = ?", params[:item]).order(:value)
   end
@@ -142,7 +143,7 @@ class ItemsController < ApplicationController
     @cattotals = Item.where(:identifier => current_user.id ).group(:category).sum('value * gst * multiplier')
     @gsttotal = Item.where(:identifier => current_user.id ).sum('value * gst * multiplier')
     #@itemised = Item.where("category = ?", params[:cat]).order(:value)
-    @itemised = Item.where("category = ?", params[:cat]).where(:identifier => current_user.id )
+    @itemised = Item.where("category = ?", params[:cat]).where(:identifier => current_user.id).order(:value)
     @expandgroup = Item.where("category = ?", params[:cat]).where(:identifier => current_user.id).where("item != ?", params[:item])
 
 

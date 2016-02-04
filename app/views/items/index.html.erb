@@ -75,6 +75,7 @@
 
 <% elsif @layout == "itemised_checks" %>
 <%= form_tag edit_checks_ind_path, method: :get do %>
+<%=submit_tag "categorise selection"%>
 <% counter = 0 %>
 <tbody>
     <%= hidden_field_tag :cat, params[:cat] %>

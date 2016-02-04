@@ -29,7 +29,10 @@
   <td></td>
 </tbody>
 <tbody>
+
+
   <%= form_tag edit_checks_ind_path, method: :get do %>
+  <%=submit_tag "categorise selection"%>
     <% counter = 0 %>
     <%= hidden_field_tag :cat, params[:cat] %>
     <%= hidden_field_tag :item, params[:item] %>
@@ -63,4 +66,7 @@
   </div>
 
 <% end %>
+
+  <%= link_to "Back to unsorted" ,root_path(:cat => "unsorted", :layout => "itemised"),class: "btn btn-default" %>
+
 <% end %>
