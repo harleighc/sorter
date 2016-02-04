@@ -56,9 +56,6 @@ class ItemsController < ApplicationController
   end
 
 
-
-
-
   def update_gst
     old_items_gst = Item.where(:identifier => current_user.id ).where(:category => params[:cat]).
     updated_items_gst = old_items_gst.update_all(:multiplier => params[:newmult])
@@ -70,22 +67,22 @@ class ItemsController < ApplicationController
 
 
   def update_checks_mult
-       puts "PARAMS: #{params.inspect}"
-       puts "params[:checks_mult]: #{params[:checks_mult].split(',').inspect}"
+       #puts "PARAMS: #{params.inspect}"
+      # puts "params[:checks_mult]: #{params[:checks_mult].split(',').inspect}"
        old_items_checks_mult = Item.where(:identifier => current_user.id ).where(:category => params[:cat]).where(:item => params[:checks_mult].split(','))
-       puts "old_items_checks_mult: #{old_items_checks_mult.inspect}"
+      # puts "old_items_checks_mult: #{old_items_checks_mult.inspect}"
        updated_items_checks_mult = old_items_checks_mult.update_all(:category => params[:newcat])
-       puts "updated_items_checks_mult: #{updated_items_checks_mult.inspect}"
+       #puts "updated_items_checks_mult: #{updated_items_checks_mult.inspect}"
        redirect_to session[:my_previous_url]
   end
 
   def update_checks_ind
-       puts "PARAMS: #{params.inspect}"
-    puts "params[:checks_ind]: #{params[:checks_ind].split(',').inspect}"
+      # puts "PARAMS: #{params.inspect}"
+    #puts "params[:checks_ind]: #{params[:checks_ind].split(',').inspect}"
     old_items_checks_ind = Item.where(:identifier => current_user.id ).where(:category => params[:cat]).where(:id => params[:checks_ind].split(','))
-    puts "old_items_checks_ind: #{old_items_checks_ind.inspect}"
+    #puts "old_items_checks_ind: #{old_items_checks_ind.inspect}"
     updated_items_checks_ind = old_items_checks_ind.update_all(:category => params[:newcat])
-    puts "updated_items_checks_ind: #{updated_items_checks_ind.inspect}"
+   # puts "updated_items_checks_ind: #{updated_items_checks_ind.inspect}"
      redirect_to session[:my_previous_url]
   end
 

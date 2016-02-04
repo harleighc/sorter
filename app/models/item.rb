@@ -2,10 +2,10 @@
 class Item < ActiveRecord::Base
 
 
-  def self.import(file,user_id)
-  require 'byebug'
+def self.import(file,user_id)
+  
 
-  'byebug'
+ 
 x = CSV.read(file.path)
 
 x.each do |row|
@@ -64,7 +64,7 @@ x.each do |row|
   row.unshift(user_id)
   row.unshift(1)
   row.unshift(0.1304)
-    row.unshift(3)
+   row.unshift(3)
 
 
 end
