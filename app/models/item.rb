@@ -3,10 +3,8 @@ class Item < ActiveRecord::Base
 
 
 def self.import(file,user_id)
-  
 
- 
-x = CSV.read(file.path)
+ x = CSV.read(file.path)
 
 x.each do |row|
  case row[0]
